@@ -37,7 +37,11 @@
 	}
 
 	NSTask *task = [self taskForKey:@"PngCrush" bundleName:@"pngcrush" arguments:args];
-	if (!task) return;
+    if (!task) {
+        NSLog(@"Could not launch PngCrush");
+        [file setStatus:@"err"];
+    }
+    
 	
 	NSPipe *commandPipe = [NSPipe pipe];
 	NSFileHandle *commandHandle = [commandPipe fileHandleForReading];		
@@ -70,43 +74,17 @@
 {
 	int res;
 	//NSLog(line);
-	if ((res = [self readNumberAfter:@")=    " inLine:line]) || (res = [self readNumberAfter:@"IDAT chunks   =    " inLine:line]))
+	if ((res = [self readNumberAfter:@") =     " inLine:line]) || (res = [self readNumberAfter:@"IDAT chunks    =     " inLine:line]))
 	{	
-		if (!firstIdatSize)
-		{
-			firstIdatSize = res;
-//			NSLog(@"Idat is %d",res);
-		}
-		else
-		{
-			int fileSize = [file byteSize];
-			if (fileSize)
-			{
-				int optimized = fileSize + res - firstIdatSize;
-				
-				[file setByteSizeOptimized:optimized];
-				
-//				NSLog(@"pngcrush returned %d vs %d",fileSize,optimized);
-			}
-			else
-			{
-//				NSLog(@"ignoring %d idat, no file size",res);				
-			}
-		}
-	}
-	else 
+        // eh
+    }
+	else
 	{
 		NSRange substr = [line rangeOfString:@"Best pngcrush method"];
 		if (substr.length)
 		{
 			return YES;			
 		}
-		else 
-		{
-//			NSLog(@"dunno %@",line);
-			
-		}
-
 	}
 	return NO;
 }
