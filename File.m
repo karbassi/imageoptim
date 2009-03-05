@@ -1,9 +1,7 @@
 //
 //  File.m
-//  ImageOptim
 //
 //  Created by porneL on 8.wrz.07.
-//  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 
 #import "File.h"
@@ -127,7 +125,7 @@
 {
     @synchronized(self) 
     {        
-        if ((!byteSizeOptimized || size < byteSizeOptimized) && size > 10)
+        if ((!byteSizeOptimized || size < byteSizeOptimized) && size > 30)
         {
     //		NSLog(@"We've got a new winner. old %d new %d",byteSizeOptimized,size);
             byteSizeOptimized = size;
@@ -136,11 +134,16 @@
     }
 }
 
--(void)removeOldFilePathOptimized:(NSString *)old
+-(void)removeOldFilePathOptimized
 {
-	if (old && [old length])
+	if (filePathOptimized)
 	{
-		[[NSFileManager defaultManager] removeFileAtPath:old handler:nil];		
+        if ([filePathOptimized length])
+        {
+            [[NSFileManager defaultManager] removeFileAtPath:filePathOptimized handler:nil];
+        }
+        [filePathOptimized autorelease];
+        filePathOptimized = nil;
 	}
 }
 
@@ -148,21 +151,14 @@
 {
     @synchronized(self) 
     {        
-        NSString *oldFile = nil;
-        //NSLog(@"set opt %@ %d in %@ %d",path,size,filePathOptimized,byteSizeOptimized);
+        NSLog(@"File %@ optimized from %d down to %d in %@",filePath?filePath:filePathOptimized,byteSizeOptimized,size,path);
         [lock lock];
         if (size <= byteSizeOptimized)
         {
-            oldFile = filePathOptimized;		
+            [self removeOldFilePathOptimized];
             filePathOptimized = [path copy];
             [self setByteSizeOptimized:size];
-        }
-            
-        if (oldFile)
-        {
-            [self removeOldFilePathOptimized:oldFile];
-            [oldFile release];
-        }
+        }            
         [lock unlock];
     //	NSLog(@"Got optimized %db path %@",size,path);
     }
@@ -212,10 +208,13 @@
 			NSFileHandle *write = [NSFileHandle fileHandleForWritingAtPath:filePath];
 			NSData *data = [read readDataToEndOfFile];
 			
-			if ([data length] == byteSizeOptimized && [data length] > 10)
+			if ([data length] == byteSizeOptimized && [data length] > 30)
 			{
 				[write writeData:data];
 				[write truncateFileAtOffset:[data length]];
+                [read closeFile];
+                [write closeFile];
+                [self removeOldFilePathOptimized];
 			}
 			else 
 			{
@@ -227,9 +226,14 @@
 		{
 			if (!backup) {[fm removeFileAtPath:filePath handler:nil];}
 			
-			if (![fm movePath:filePathOptimized toPath:filePath handler:nil]) 
+			if ([fm movePath:filePathOptimized toPath:filePath handler:nil]) 
 			{
-				NSLog(@"Failed to move from %@ to %@",filePathOptimized, filePath);
+                [filePathOptimized autorelease];
+                filePathOptimized = nil;
+            }            
+            else
+            {
+                NSLog(@"Failed to move from %@ to %@",filePathOptimized, filePath);
 				return NO;				
 			}
 		}
@@ -247,7 +251,7 @@
 {
 	[lock lock];
 	workersActive++;
-	[self setStatus:@"progress" text:[NSString stringWithFormat:@"Started %s",[worker className]]];
+	[self setStatus:@"progress" text:[NSString stringWithFormat:@"Started %@",[worker className]]];
 	[lock unlock];
 }
 
@@ -330,28 +334,28 @@
 			w = [[PngCrushWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
-			[w release];
+			[w autorelease];
 		}
 		if ([defs boolForKey:@"PngOut.Enabled"])
 		{
 			w = [[PngoutWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
-			[w release];		
+			[w autorelease];		
 		}
 		if ([defs boolForKey:@"OptiPng.Enabled"])
 		{
 			w = [[OptiPngWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
-			[w release];		
+			[w autorelease];		
 		}
 		if ([defs boolForKey:@"AdvPng.Enabled"])
 		{
 			w = [[AdvCompWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
-			[w release];
+			[w autorelease];
 		}
 	}
 	else 
@@ -361,14 +365,14 @@
             //NSLog(@"%@ is jpeg",filePath);
             w = [[JpegoptimWorker alloc] initWithFile:self];
             [runLater addObject:w];
-            [w release];
+            [w autorelease];
         }
         if ([defs boolForKey:@"JpegTran.Enabled"])
         {
             //NSLog(@"%@ is jpeg",filePath);
             w = [[JpegtranWorker alloc] initWithFile:self];
             [runLater addObject:w];
-            [w release];
+            [w autorelease];
         }
     }
 	
@@ -392,8 +396,8 @@
 		[queue addWorker:w after:[runFirst lastObject]];
 	}	
 	
-	[runFirst release];
-	[runLater release];
+	[runFirst autorelease];
+	[runLater autorelease];
 	
 	if (!workersTotal) 
 	{
@@ -407,7 +411,7 @@
 {
 	[self setStatusImage:nil];
     [statusText release]; statusText = nil;
-	[self removeOldFilePathOptimized:filePathOptimized];
+	[self removeOldFilePathOptimized];
 	[filePathOptimized release]; filePathOptimized = nil;
 	[filePath release]; filePath = nil;
 	[displayName release]; displayName = nil;

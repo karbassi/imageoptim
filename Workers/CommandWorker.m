@@ -1,9 +1,7 @@
 //
 //  Worker.m
-//  ImageOptim
 //
 //  Created by porneL on 23.wrz.07.
-//  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 
 #import "CommandWorker.h"
@@ -183,7 +181,7 @@
 
 -(NSString *)tempPath:(NSString*)baseName
 {
-	return [NSTemporaryDirectory() stringByAppendingPathComponent: [NSString stringWithFormat:@"ImageOptim.%@.%x.%x.png",baseName,[file hash],random()]];
+	return [NSTemporaryDirectory() stringByAppendingPathComponent: [NSString stringWithFormat:@"ImageOptim.%@.%x.%x.tmp",baseName,[file hash],random()]];
 }
 
 -(id)delegate

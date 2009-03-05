@@ -1,9 +1,7 @@
 //
 //  WorkerQueue.m
-//  ImageOptim
 //
 //  Created by porneL on 29.wrz.07.
-//  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 
 #import "WorkerQueue.h"
@@ -169,14 +167,11 @@
 
 -(void)workerHasFinished:(Worker *)w
 {
+    [w retain];
 	[workersLock lock];
 //		NSLog(@"Worker %@ finished",w);
-
-		[w retain];
-		[runningWorkers removeObjectIdenticalTo:w];
-	
-	[w release];
-	
+		[runningWorkers removeObjectIdenticalTo:w];	
+        [w autorelease];	
 	[workersLock unlock];
 	
 	[self runWorkers];

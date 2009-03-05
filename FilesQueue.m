@@ -1,9 +1,7 @@
 //
 //  FilesQueue.m
-//  ImageOptim
 //
 //  Created by porneL on 23.wrz.07.
-//  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "File.h"
 #import "FilesQueue.h"
@@ -16,9 +14,7 @@
 {
 	progressBar = [inBar retain];
 	filesController = [inController retain];
-	tableView = [inTableView retain];
-	
-	//[[[tableView window] contentView] setFrameRotation:5];
+	tableView = [inTableView retain];	
 	
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
 	
@@ -30,14 +26,15 @@
 	[tableView setDelegate:self];
 	[tableView setDataSource:self];
 	[tableView registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType,NSStringPboardType,nil]];
+    
 	[self setEnabled:YES];	
 	return self;
 }
 
 -(void)dealloc
 {
-	[progressBar release];
-	[filesControllerLock release];
+	[progressBar release]; progressBar = nil;
+	[filesControllerLock release]; filesControllerLock = nil;
 	[filesController release]; filesController = nil;
 //	[tableView unregisterDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType,NSStringPboardType,nil]];
 	[tableView release]; tableView = nil;
@@ -99,6 +96,16 @@
     return nil;
 }
 
+-(void)openRowInFinder:(int)row
+{    
+    NSArray *objs = [filesController arrangedObjects];
+    if (row < [objs count])
+    {
+        File *f = [objs objectAtIndex:row];
+        [[NSWorkspace sharedWorkspace] selectFile:[f filePath] inFileViewerRootedAtPath: @""];
+    }    
+}
+
 - (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation
 {
 	NSPasteboard *pboard = [info draggingPasteboard];
@@ -119,7 +126,7 @@
 
 	DirWorker *w = [[DirWorker alloc] initWithPath:path filesQueue:self];
 	[dirWorkerQueue addWorker:w after:nil];
-	[w release];
+	[w autorelease];
 }
 
 /** filesControllerLock must be locked before using this
@@ -169,7 +176,7 @@
 				f = [[File alloc] initWithFilePath:path];
 				[filesController addObject:f];
 				[f enqueueWorkersInQueue:workerQueue];
-				[f release];					
+				[f autorelease];					
 			}
 			
 			[filesControllerLock unlock];

@@ -103,7 +103,7 @@
 		if ([scan scanInt:&byteSize] && byteSize) 
 		{
 			fileSizeOptimized = byteSize;
-			[file setByteSizeOptimized:byteSize];			
+			//[file setByteSizeOptimized:byteSize];			
 		}		
 	}
 	else if ([line length] >= 3 && [line characterAtIndex:2] == '%')
