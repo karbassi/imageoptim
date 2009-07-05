@@ -28,14 +28,10 @@
 
 -(void)setOwner:(id)o;
 
--(id)initWithMaxWorkers:(int)max;
+-(void)setMaxConcurrentOperationCount:(int)max;
+-(NSArray*)operations;
+-(void)addOperation:(Worker *)w;
 
--(void)addWorker:(Worker *)w after:(Worker *)a;
-
--(void)runWorkers;
-
--(void)setMaxWorkersCount:(int)i;
--(void)workerHasFinished:(Worker *)w; // not a delegate method
--(void)threadEntry:(Worker *)w;
--(BOOL)hasFinished;
+@property (readonly,retain) NSMutableArray *queuedWorkers;
+@property (assign) id owner;
 @end

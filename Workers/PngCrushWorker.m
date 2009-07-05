@@ -17,9 +17,8 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
 	NSArray *chunks = [defaults arrayForKey:@"PngCrush.Chunks"];
-	NSEnumerator *enu = [chunks objectEnumerator];
 	NSDictionary *dict;
-	while(dict = [enu nextObject])
+	for(dict in chunks)
 	{
 		NSString *name = [dict objectForKey:@"name"];
 		if (name)
@@ -49,11 +48,13 @@
 	
 	[self launchTask:task];
 	
-	[self parseLinesFromHandle:commandHandle];
+	//[self parseLinesFromHandle:commandHandle];
 	
-	[commandHandle closeFile];
+    [commandHandle readInBackgroundAndNotify];
 	
 	[task waitUntilExit];	
+	
+	[commandHandle closeFile];
 	
 	if (![task terminationStatus])
 	{
@@ -64,32 +65,31 @@
 		}
 	}
 	else NSLog(@"pngcrush failed");
-	
-	[task autorelease];
 }
 
--(BOOL)parseLine:(NSString *)line
-{
-	int res;
-	//NSLog(@"PNGCrush: %@",line);
-	if ((res = [self readNumberAfter:@") =     " inLine:line]) || (res = [self readNumberAfter:@"IDAT chunks    =     " inLine:line]))
-	{	
-        // eh
-    }
-	else
-	{
-		NSRange substr = [line rangeOfString:@"Best pngcrush method"];
-		if (substr.length)
-		{
-			return YES;			
-		}
-	}
-	return NO;
-}
+//-(BOOL)parseLine:(NSString *)line
+//{
+//	int res;
+//	//NSLog(@"PNGCrush: %@",line);
+//	if ((res = [self readNumberAfter:@") =     " inLine:line]) || (res = [self readNumberAfter:@"IDAT chunks    =     " inLine:line]))
+//	{	
+//        // eh
+//    }
+//	else
+//	{
+//		NSRange substr = [line rangeOfString:@"Best pngcrush method"];
+//		if (substr.length)
+//		{
+//			return YES;			
+//		}
+//	}
+//	return NO;
+//}
 
 
 -(BOOL)makesNonOptimizingModifications
 {
 	return YES;
 }
+
 @end

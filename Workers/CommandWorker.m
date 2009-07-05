@@ -14,7 +14,7 @@
 {
 	if (self = [self init])
 	{
-		file = [aFile retain];
+		self.file = aFile;
 	}
 	return self;
 }
@@ -30,12 +30,6 @@
 	return NO;
 }
 
-
--(void)dealloc
-{
-	[file release]; file = nil;
-	[super dealloc];
-}
 
 -(void)parseLinesFromHandle:(NSFileHandle *)commandHandle
 {
@@ -91,7 +85,7 @@
     libPath = [libPath stringByDeletingLastPathComponent];
     
 	[environment setObject:libPath forKey:@"DYLD_FALLBACK_LIBRARY_PATH"];
-    NSLog(@"Library path: %@",libPath);
+//    NSLog(@"Library path: %@",libPath);
 
     // set up for unbuffered I/O
 	[environment setObject:@"YES" forKey:@"NSUnbufferedIO"];
@@ -112,7 +106,7 @@
 		{
 			int pid = [task processIdentifier];
 	//		NSLog(@"running with lopri %d",pid);
-			if (pid > 1) setpriority(PRIO_PROCESS, pid, 10);
+			if (pid > 1) setpriority(PRIO_PROCESS, pid, PRIO_MAX/2); // PRIO_MAX is minimum priority. POSIX is intuitive.
 		}
 	}
 	@catch(NSException *e)
@@ -184,8 +178,9 @@
 	return [NSTemporaryDirectory() stringByAppendingPathComponent: [NSString stringWithFormat:@"ImageOptim.%@.%x.%x.tmp",baseName,[file hash],random()]];
 }
 
--(id)delegate
+-(NSObject<WorkerQueueDelegate>*)delegate
 {
 	return file;
 }
+@synthesize file;
 @end

@@ -5,11 +5,11 @@
 //
 
 #import "Worker.h"
-#import "WorkerQueue.h"
 
 @implementation Worker
+//@synthesize dependsOn;
 
--(id <WorkerQueueDelegate>)delegate
+-(NSObject <WorkerQueueDelegate>*)delegate
 {
 	return nil;
 }
@@ -17,6 +17,24 @@
 -(BOOL)isRelatedTo:(File *)f
 {
 	return NO;
+}
+
+-(void)main {
+//    NSLog(@"Worker start %@",self);
+    [[self delegate] workerHasStarted:self];
+    @try {
+        [self run]; 
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Caught %@: %@ %@", [exception name], [exception  reason], self);
+    }
+    @finally {        
+//                [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification notificationWithName:@"WorkersMayHaveFinished" object:nil] 
+//                                                           postingStyle:NSPostWhenIdle 
+//                                                           coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+        [[self delegate] workerHasFinished:self];        
+    }
+//    NSLog(@"Worker done ok %@",self);
 }
 
 -(void)run
@@ -29,30 +47,10 @@
 	return NO;
 }
 
--(void)setDependsOn:(Worker *)w
-{
-	if (dependsOn != w)
-	{
-		[dependsOn release];
-		dependsOn = [w retain];		
-	}
-}
-
--(Worker *)dependsOn
-{
-	return dependsOn;
-}
-
 -(NSString *)description
 {
-	return [NSString stringWithFormat:@"%@ %X <dep %@>",[self className],[self hash],dependsOn];
-}
-
--(void)dealloc 
-{
-//	NSLog(@"### Worker dealloc %@",[self className]);
-	[dependsOn release]; dependsOn = nil;
-	[super dealloc];
+	return [NSString stringWithFormat:@"%@ %X ready %d, running %d, deleg %@",
+            [self className],[self hash],[self isReady],[self isExecuting],[self delegate]];
 }
 
 @end

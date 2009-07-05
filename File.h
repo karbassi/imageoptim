@@ -5,7 +5,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "WorkerQueue.h"
+#import "Worker.h"
+
+@class Dupe;
 
 @interface File : NSObject <NSCopying, WorkerQueueDelegate> {
 	NSString *filePath;
@@ -13,27 +15,27 @@
 	
 	long byteSize;
 	long byteSizeOptimized;	
-	float percentDone;
+	double percentDone;
 	
-	NSString *filePathOptimized;
-	
-	NSRecursiveLock *lock;
-	
-	WorkerQueue *serialQueue;
-	
+	NSString *filePathOptimized;	
+		
 	NSImage *statusImage;
     NSString *statusText;
+    
+    NSMutableArray *workers;
     
 	int workersActive;
 	int workersFinished;
 	int workersTotal;
-	
-	BOOL isBusy;
+    
+    NSOperationQueue *fileIOQueue;
+    
+    Dupe *dupe;
 }
 
 -(BOOL)isBusy;
 
--(void)enqueueWorkersInQueue:(WorkerQueue *)queue;
+-(void)enqueueWorkersInCPUQueue:(NSOperationQueue *)queue fileIOQueue:(NSOperationQueue *)fileIOQueue;
 
 -(void)setFilePathOptimized:(NSString *)f size:(long)s;
 
@@ -46,18 +48,18 @@
 -(void)setFilePath:(NSString *)s;
 
 -(NSString *)fileName;
--(NSString *)filePath;
--(long)byteSize;
--(long)byteSizeOptimized;
--(float)percentDone;
--(void)setPercentDone:(float)d;
+
+@property (assign) long byteSize, byteSizeOptimized;
+@property (retain) NSString *statusText, *filePath, *displayName;
+@property (retain) NSImage *statusImage;
+
+@property (assign) double percentDone;
 
 -(void)setStatus:(NSString *)name text:(NSString*)text;
--(NSImage *)statusImage;
--(NSString *)statusText;
--(void)setStatusImage:(NSImage *)i;
-
+-(void)cleanup;
 
 +(long)fileByteSize:(NSString *)afile;
 
+
+-(void)doEnqueueWorkersInCPUQueue:(NSOperationQueue *)queue;
 @end

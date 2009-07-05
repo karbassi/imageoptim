@@ -4,12 +4,13 @@
 #import "PrefsController.h"
 #include <mach/mach_host.h>
 #include <mach/host_info.h>
+//#import "Dupe.h";
 
 @implementation ImageOptim
 
 +(void)initialize
 {
-	srandom(random() ^ time(NULL));
+	//srandom(random() ^ time(NULL));
 
 	NSMutableDictionary *defs = [NSMutableDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"defaults" ofType:@"plist"]];
 	
@@ -17,7 +18,7 @@
 	if (maxTasks > 6) maxTasks++;
 	
 	[defs setObject:[NSNumber numberWithInt:maxTasks] forKey:@"RunConcurrentTasks"];
-	[defs setObject:[NSNumber numberWithFloat:ceilf((float)maxTasks/3.9F)] forKey:@"RunConcurrentDirscans"];
+	[defs setObject:[NSNumber numberWithInt:(int)ceil((double)maxTasks/3.9)] forKey:@"RunConcurrentDirscans"];
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defs];
 }
@@ -26,22 +27,20 @@
 {
 	if (self = [super init])
 	{
-		fileTypes = [[NSArray arrayWithObjects:@"png",@"PNG",NSFileTypeForHFSTypeCode( 'PNGf' ),@"public.png",@"image/png",
-			@"jpg",@"jpeg",@"JPG",@"JPEG",NSFileTypeForHFSTypeCode( 'JPEG' ),@"public.jpeg",@"image/jpeg",nil] retain];
+		fileTypes = [[NSArray alloc] initWithObjects:@"png",@"PNG",NSFileTypeForHFSTypeCode( 'PNGf' ),@"public.png",@"image/png",
+			@"jpg",@"jpeg",@"JPG",@"JPEG",NSFileTypeForHFSTypeCode( 'JPEG' ),@"public.jpeg",@"image/jpeg",nil];
 	}
 	return self;
 }
 
--(void)dealloc
-{
-	[prefsController release]; prefsController = nil;
-	[fileTypes release]; fileTypes = nil;
-	[super dealloc];
-}
+//-(void)loadDupes {
+//    [Dupe loadDupes];
+//}
 
 -(void)awakeFromNib
 {		
 	filesQueue = [[FilesQueue alloc] initWithTableView:tableView progressBar:progressBar andController:filesController];
+//    [self performSelectorInBackground:@selector(loadDupes) withObject:nil];
 }
 
 +(int)numberOfCPUs
@@ -56,7 +55,7 @@
 // invoked by Dock
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)path
 {
-    [filesQueue addFilePath:path dirs:YES];
+    [filesQueue addPath:path dirs:YES];
 	[filesQueue runAdded];
 	return YES;
 }
@@ -70,6 +69,8 @@
 {
 //	NSLog(@"show prefs");
 
+//    [Dupe resetDupes]; // changes in prefs invalidate dupes database; FIXME: this is inaccurate and lame
+    
 	if (!prefsController)
 	{
 		prefsController = [PrefsController new];
@@ -83,13 +84,13 @@
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:stringURL]];
 }
 
--(IBAction)openPngOutHomepage:(id)sender;
+-(IBAction)openPngOutHomepage:(id)sender
 {
 	[self openURL:@"http://www.advsys.net/ken/utils.htm"];
 }
--(IBAction)openPngOutDownload:(id)sender;
+-(IBAction)openPngOutDownload:(id)sender
 {
-	[self openURL:@"http://www.jonof.id.au/index.php?p=pngout"];
+	[self openURL:@"http://www.jonof.id.au/pngout"];
 }
 
 -(IBAction)browseForFiles:(id)sender
@@ -106,7 +107,7 @@
 - (void)openPanelDidEnd:(NSOpenPanel *)oPanel returnCode:(int)returnCode  contextInfo:(void  *)contextInfo
 {
 	if (returnCode == NSOKButton) {
-        [filesQueue addFilesFromPaths:[oPanel filenames]];
+        [filesQueue addPaths:[oPanel filenames]];
     }
 }
 
@@ -116,4 +117,20 @@
 	[application terminate:self];
 }
 
+-(void)applicationWillTerminate:(NSNotification*)n {    
+    [filesQueue cleanup];
+//    [Dupe saveDupes];
+}
+
+-(NSString*)version {
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleGetInfoString"];
+}
+
+@synthesize tableView;
+@synthesize filesController;
+@synthesize filesQueue;
+@synthesize application;
+@synthesize prefsController;
+@synthesize progressBar;
+@synthesize fileTypes;
 @end

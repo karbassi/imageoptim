@@ -5,22 +5,27 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "WorkerQueue.h";
-#import "File.h";
 
-@interface Worker : NSObject {
-	Worker *dependsOn;
+
+
+@class Worker;
+@class File;
+
+@protocol WorkerQueueDelegate
+-(void)workerHasFinished:(Worker *)w;
+-(void)workerHasStarted:(Worker *)w;
+@end
+
+
+@interface Worker : NSOperation {
+
 }
 
 -(BOOL)isRelatedTo:(File *)f;
 
 -(BOOL)makesNonOptimizingModifications;
 
--(id <WorkerQueueDelegate>)delegate;
+-(NSObject <WorkerQueueDelegate> *)delegate;
 
 -(void)run;
-
--(Worker *)dependsOn;
--(void)setDependsOn:(Worker *)w;
-
 @end
