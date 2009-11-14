@@ -6,7 +6,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Worker.h"
-#import "File.h";
+#import "File.h"
 
 @interface CommandWorker : Worker {
 	File *file;
@@ -23,7 +23,7 @@
 
 -(void)launchTask:(NSTask *)task;
 
--(NSString *)tempPath:(NSString*)baseName;
+-(NSString *)tempPath;
 
 -(NSString *)executablePathForKey:(NSString *)prefsName bundleName:(NSString *)resourceName;
 

@@ -9,17 +9,24 @@
 
 @implementation OptiPngWorker
 
+-(id)init {
+    if (self = [super init])
+    {
+        NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+        optlevel = [defs integerForKey:@"OptiPng.Level"];
+        interlace = [defs integerForKey:@"OptiPng.Interlace"];
+
+    }
+    return self;
+}
+
 -(void)run
 {	
-	NSString *temp = [self tempPath:@"OptiPng"];
-		
-	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-		
-	int optlevel = [defs integerForKey:@"OptiPng.Level"];
+	NSString *temp = [self tempPath];
+	
 	NSMutableArray *args = [NSMutableArray arrayWithObjects: [NSString stringWithFormat:@"-o%d",optlevel ? optlevel : 6],
 							@"-out",temp,@"--",[file filePath],nil];
 
-	int interlace = [defs integerForKey:@"OptiPng.Interlace"];
 	if (interlace != -1)
 	{
 		[args insertObject:[NSString stringWithFormat:@"-i%d",interlace] atIndex:0];
@@ -27,8 +34,7 @@
 	
 	NSTask *task = [self taskForKey:@"OptiPng" bundleName:@"optipng" arguments:args];
 	if (!task) {
-        NSLog(@"Could not launch OptiPng");
-        [file setStatus:@"err" text:@"OptiPNG failed to start"];
+        return;
     }
 	
 	NSPipe *commandPipe = [NSPipe pipe];
@@ -48,7 +54,7 @@
 	
 	if (![task terminationStatus] && fileSizeOptimized)
 	{
-		[file setFilePathOptimized:temp size:fileSizeOptimized];	
+		[file setFilePathOptimized:temp size:fileSizeOptimized toolName:[self className]];	
 	}
 	//else NSLog(@"Optipng failed to optimize anything");
 }
@@ -57,7 +63,7 @@
 {
 	//NSLog(@"### %@",line);
 		
-	long res;
+	NSUInteger res;
 	
 	if ([line length] > 20)
 	{

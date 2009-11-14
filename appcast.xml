@@ -5,19 +5,6 @@
       <link>http://pornel.net/imageoptim/appcast.xml</link>
       <description>ImageOptim updates</description>
       <language>en</language>
-
-         <item>
-             <title>Version 1.0.9</title>
- 						<sparkle:releaseNotesLink>
- 							http://pornel.net/imageoptim/en/
- 						</sparkle:releaseNotesLink>
-             <pubDate>Thu, 5 Mar 2009 00:17:20 +0000</pubDate>
-             <sparkle:minimumSystemVersion>10.4.4</sparkle:minimumSystemVersion>
-             <description>Stability fixes. Dropped support for Panther.</description>
-             <enclosure url="http://pornel.net/ImageOptim1.0.9.tar.bz2" 
-               sparkle:version="1.0.9" length="1298033" type="application/bzip2" 
-               sparkle:dsaSignature="MC0CFAswZuMxfM9L7cOI7wyB+G9aC5dxAhUAgplZd9IL7u+/0Aknd/qq7SdkEgE=" />
-          </item>
          <item>
             <title>Version 1.0.10</title>
 						<sparkle:releaseNotesLink>
@@ -26,26 +13,53 @@
 						<description>Faster directory scan</description>
             <pubDate>Sun, 21 Jun 2009 19:21:31 +0100</pubDate>
             <enclosure url="http://pornel.net/ImageOptim1.0.10.tar.bz2" sparkle:version="1.0.10" length="1218907" type="application/bzip2" sparkle:dsaSignature="MCwCFDooLOGTyB+eqp5IYHllEd3Mc+SrAhQXOBK19vn06LDp4IcZVrDSvcF6YQ==" />
-         </item>          
-        <item>
-            <title>Version 1.2 for Leopard</title>
-						<sparkle:releaseNotesLink>
-							http://pornel.net/imageoptim/en/
-						</sparkle:releaseNotesLink>
-            <pubDate>Sat, 29 Nov 2008 19:19:25 +0000</pubDate>
+         </item>
+         <item>
+            <title>Version 1.2.1 for Leopard</title>
+            <pubDate>Mon,  3 Aug 2009 00:44:37 +0100</pubDate>
             <sparkle:minimumSystemVersion>10.5.7</sparkle:minimumSystemVersion>
             <description><![CDATA[
-            <p>ImageOptim now requires Leopard (10.5.7).</p>
             <ul>
-                <li>New: Faster and more stable thanks to new Leopard APIs.</li>
-                <li>New: Can handle order of magnitude more files at once.</li>
-                <li>New: Avoids writing many files to disk at the same time.</li>
-                <li>New: Checks actual file type rather than rely on filename extension.</li>
-                <li>Fix: Temporary files are cleaned up on exit.</li>
-                <li>Fix: Errors during optimisations don't slow down or lock up ImageOptim.</li>
+                <li>Updated Polish localization (<b><a href="mailto:pornel@pornel.net">more translations welcome!</a></b>)</li>
+                <li>Fixed progress indicator</li>
+            </ul>    
+            <p>New in 1.2:</p>
+            <ul>
+                <li>Requires Leopard (10.5.7)</li>
+                <li>Leaner and more stable thanks to new Leopard APIs</li>
+                <li>Can handle order of magnitude more files at once</li>
+                <li>Avoids writing many files to disk at the same time</li>
+                <li>Checks actual file type rather than rely on filename extension</li>
+                <li>PNGOUT may be gracefully stopped if takes too much time to optimize</li>
+                <li>Temporary files are cleaned up on exit</li>
             </ul>
             ]]></description>
-            <enclosure url="http://pornel.net/ImageOptim1.0.8.tar.bz2" sparkle:version="1.0.8" length="1243186" type="application/bzip2" sparkle:dsaSignature="MC0CFHLK3hlwpEGrRFyowAADeGOoAmCBAhUAj0pt8eXlSLyPWpAqkyIb8wMVUos=" />
+            <enclosure url="http://pornel.net/ImageOptim1.2.1.tar.bz2" sparkle:version="1.2.1" length="1015290" type="application/bzip2" sparkle:dsaSignature="MC0CFBRrUVsE5LsC6li5AfknK2aVGGBnAhUAmHYElkSh/F0TU3fOSWPkJiF8Jms=" />
          </item>    
+         <item>
+            <title>Version 1.2.2 for Leopard</title>
+            <pubDate>Sun,  9 Aug 2009 01:52:10 +0100</pubDate>
+            <sparkle:minimumSystemVersion>10.5.7</sparkle:minimumSystemVersion>
+            <description><![CDATA[
+            <ul>
+                <li>Added French localization by Mathias Richter (<b><a href="mailto:pornel@pornel.net">more translations welcome!</a></b>)</li>
+                <li>Added modified version of optipng that clears dirty alpha transparency (RGB components of fully transparent pixels)</li>
+                <li>Added Gifsicle for optimisation of <em>animated</em> GIF files (use PNG instead of static GIFs!)</li>
+                <li>Added tools menu for quick disabling/enabling of tools used</li>
+                <li>Added more chunk names to default configuration of PNGCrush</li>
+            </ul>    
+            <p>New in 1.2:</p>
+            <ul>
+                <li><strong>Requires Leopard (10.5.7)</strong></li>
+                <li>Leaner and more stable thanks to new Leopard APIs</li>
+                <li>Can handle order of magnitude more files at once</li>
+                <li>Avoids writing many files to disk at the same time</li>
+                <li>Checks actual file type rather than rely on filename extension</li>
+                <li>PNGOUT may be gracefully stopped if takes too much time to optimize</li>
+                <li>Temporary files are cleaned up on exit</li>
+            </ul>
+            ]]></description>
+            <enclosure url="http://pornel.net/ImageOptim1.2.2.tar.bz2" sparkle:version="1.2.2" length="1271617" type="application/bzip2" sparkle:dsaSignature="MCwCFFvPS2Pn1fY++8rHB7ia/15jHX4bAhRoVcRxle3B7xiX6jqXfYnq2xAgzA==" />
+         </item>  
 </channel>
 </rss>

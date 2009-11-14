@@ -60,6 +60,18 @@
 			<key>name</key>
 			<string>sRGB</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>tIME</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>tEXT</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>iTXt</string>
+		</dict>
 	</array>
 	<key>PngOut.Bundle</key>
 	<false/>
@@ -73,6 +85,12 @@
 	<true/>
 	<key>PngOut.InterruptIfTakesTooLong</key>
 	<true/>
+	<key>Gifsicle.Bundle</key>
+	<true/>
+	<key>Gifsicle.Enabled</key>
+	<true/>
+	<key>Gifsicle.Path</key>
+	<string>/usr/local/bin/gifsicle</string>
 	<key>PreservePermissions</key>
 	<true/>
 	<key>RunConcurrentDirscans</key>

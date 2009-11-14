@@ -9,23 +9,36 @@
 
 @implementation JpegoptimWorker
 
+-(id)init {
+    if (self = [super init])
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        comments = [defaults boolForKey:@"JpegOptim.StripComments"];
+        exif = [defaults boolForKey:@"JpegOptim.StripExif"];   
+        maxquality = [defaults integerForKey:@"JpegOptim.MaxQuality"];
+    }
+    return self;
+}
+
+-(BOOL)makesNonOptimizingModifications {
+    return maxquality < 100;
+}
+
 -(void)run
 {
 	NSFileManager *fm = [NSFileManager defaultManager];	
-	NSString *temp = [self tempPath:@"JpegOptim"];
+	NSString *temp = [self tempPath];
+    NSError *error = nil;
 	
-	if (![fm copyPath:[file filePath] toPath:temp handler:nil])
+	if (![fm copyItemAtPath:[file filePath] toPath:temp error:&error])
 	{
 		NSLog(@"Can't make temp copy of %@ in %@",[file filePath],temp);
 	}
 
 	NSMutableArray *args = [NSMutableArray arrayWithObjects: @"-q",@"--",temp,nil];
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
-	BOOL comments = [defaults boolForKey:@"JpegOptim.StripComments"];
-	BOOL exif = [defaults boolForKey:@"JpegOptim.StripExif"];
-	
+
 	if (exif && comments)
 	{
 		[args insertObject:@"--strip-all" atIndex:0];
@@ -39,7 +52,6 @@
 		[args insertObject:@"--strip-com" atIndex:0];
 	}
 	
-	int maxquality = [defaults integerForKey:@"JpegOptim.MaxQuality"];
 	if (maxquality > 10 && maxquality < 100)
 	{
 		[args insertObject:[NSString stringWithFormat:@"-m%d",maxquality] atIndex:0];
@@ -64,14 +76,14 @@
 	
 	if (![task terminationStatus] && fileSizeOptimized)
 	{
-		[file setFilePathOptimized:temp	size:fileSizeOptimized];
+		[file setFilePathOptimized:temp	size:fileSizeOptimized toolName:[self className]];
 	}
 	
 }
 
 -(BOOL)parseLine:(NSString *)line
 {
-	int size;
+	NSInteger size;
 	if (size = [self readNumberAfter:@" [OK] " inLine:line])
 	{
 		//NSLog(@"File size %d",size);

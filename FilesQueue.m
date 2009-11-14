@@ -47,11 +47,21 @@
 -(void)waitForQueuesToFinish {   
     
     if ([queueWaitingLock tryLock])
-    {
-        @try{            
+    {        
+        @try{       
+            /* sleep for a moment just in case other processes need time to start*/
+            usleep(100000);
             [cpuQueue waitUntilAllOperationsAreFinished];
             [dirWorkerQueue waitUntilAllOperationsAreFinished];            
             [fileIOQueue waitUntilAllOperationsAreFinished];
+            
+            /* while it was waiting for the last queue, one of previous queues could get busy, so let's go over it again */
+            usleep(100000);
+            [cpuQueue waitUntilAllOperationsAreFinished];
+            [dirWorkerQueue waitUntilAllOperationsAreFinished];            
+            [fileIOQueue waitUntilAllOperationsAreFinished];
+            
+            [[NSGarbageCollector defaultCollector] collectIfNeeded];
         }
         @finally {
             [queueWaitingLock unlock];
@@ -92,7 +102,7 @@
 
 - (NSDragOperation)tableView:(NSTableView *)atableView 
                 validateDrop:(id <NSDraggingInfo>)info 
-                 proposedRow:(int)row 
+                 proposedRow:(NSInteger)row 
        proposedDropOperation:(NSTableViewDropOperation)operation
 {
 	if (!isEnabled) return NSDragOperationNone;
@@ -126,17 +136,17 @@
             [f cleanup];
         }
     }
-    else NSBeep();
+    else NSBeep();    
+	[filesControllerLock unlock];
     
     [self runAdded];
-	[filesControllerLock unlock];
 }
 
 - (NSString *)tableView:(NSTableView *)aTableView toolTipForCell:(NSCell *)aCell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)aTableColumn row:(int)row mouseLocation:(NSPoint)mouseLocation
 {
     //NSLog(@"Tooltip for col %@ in row %d",aTableColumn,row);
     NSArray *objs = [filesController arrangedObjects];
-    if (row < [objs count])
+    if (row < (signed)[objs count])
     {
         File *f = [objs objectAtIndex:row];
         return [f statusText];
@@ -144,7 +154,7 @@
     return nil;
 }
 
--(void)openRowInFinder:(int)row
+-(void)openRowInFinder:(NSUInteger)row
 {    
     NSArray *objs = [filesController arrangedObjects];
     if (row < [objs count])
@@ -154,32 +164,33 @@
     }    
 }
 
-- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
 {
 	NSPasteboard *pboard = [info draggingPasteboard];
 	NSArray *paths = [pboard propertyListForType:NSFilenamesPboardType];
 	
 //	NSLog(@"Dropping files %@",paths);
-	[self addPaths:paths];
+	[self performSelectorInBackground:@selector(addPaths:) withObject:paths];
 
 	[[aTableView window] makeKeyAndOrderFront:aTableView];
-	
+
 //	NSLog(@"Finished adding drop");	
 	return YES;
 }
 
--(void)addDir:(NSString *)path
+-(void)addDir:(NSString *)path extensions:(NSArray*)e
 {
+    if (!isEnabled) return;
+    
     @try {            
-        if (!isEnabled) return;
-
-        DirWorker *w = [[DirWorker alloc] initWithPath:path filesQueue:self];
+        DirWorker *w = [[DirWorker alloc] initWithPath:path filesQueue:self extensions:e];
         [dirWorkerQueue addOperation:w];
-        [self waitInBackgroundForQueuesToFinish];
     }
     @catch (NSException *e) {
         NSLog(@"Add dir failed %@",e);
     }
+    
+    [self runAdded];
 }
 
 /** filesControllerLock must be locked before using this
@@ -205,14 +216,14 @@
 }
 
 -(void)addFilePath:(NSString*)path {
-    if ([path characterAtIndex:[path length]-1] == '~')
+    if ([path characterAtIndex:[path length]-1] == '~') // backup file
     {
+        NSLog(@"Refusing to optimize backup file");
         NSBeep();
         return;
     }
     
     [filesControllerLock lock];    
-    
     @try {  
         File *f;
         if (f = [self findFileByPath:path])
@@ -233,10 +244,11 @@
     @finally {
         [filesControllerLock unlock];
     }
-    [self waitInBackgroundForQueuesToFinish];
+    
+    [self runAdded];
 }
 
--(void)addPath:(NSString *)path dirs:(BOOL)useDirs
+-(void)addPath:(NSString *)path dirs:(NSArray*)extensionsOrNil
 {	
 	if (!isEnabled) {
         NSLog(@"Ignored %@",path);
@@ -250,9 +262,9 @@
 		{
 			[self performSelectorOnMainThread:@selector(addFilePath:) withObject:path waitUntilDone:NO];
 		}
-		else if (useDirs)
+		else if (extensionsOrNil)
 		{            
-			[self addDir:path];
+			[self addDir:path extensions:extensionsOrNil];
 		}
 	}
 }
@@ -293,7 +305,7 @@
 
 -(void)updateProgressbar
 {
-	if (![cpuQueue.operations count] && ![dirWorkerQueue.operations count])
+	if (![cpuQueue.operations count] && ![dirWorkerQueue.operations count] && ![fileIOQueue.operations count])
 	{		
         //NSLog(@"Done!");
 		[progressBar stopAnimation:nil];
@@ -303,7 +315,8 @@
 	else
 	{
 //        NSLog(@"There are still operations to do: %@ %@",workerQueue.operations,dirWorkerQueue.operations);
-		[progressBar startAnimation:nil];		
+		[progressBar startAnimation:nil];
+        [self waitInBackgroundForQueuesToFinish];
 	}
 }
 
@@ -316,11 +329,14 @@
 }
 -(void)addPaths:(NSArray *)paths
 {
+    NSArray *ext = [self extensions];
     //NSLog(@"Adding paths %@",paths);
 	for(NSString *path in paths)
 	{
-		[self addPath:path dirs:YES];
+		[self addPath:path dirs:ext];
 	}
+    
+    [self runAdded];
 }
 
 -(void) quickLook {
@@ -363,6 +379,78 @@
     @catch(NSException *e) {
         NSLog(@"Can't run quicklook %@",e);
     }
+}
+
+
+#define PNG_ENABLED 1
+#define JPEG_ENABLED 2
+#define GIF_ENABLED 4
+
+-(int)typesEnabled {
+    int types = 0;
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    
+    if ([defs boolForKey:@"PngCrush.Enabled"] || [defs boolForKey:@"PngOut.Enabled"] ||
+        [defs boolForKey:@"OptiPng.Enabled"] || [defs boolForKey:@"AdvPng.Enabled"])
+    {
+        types |= PNG_ENABLED;
+    }
+    
+    if ([defs boolForKey:@"JpegOptim.Enabled"] || [defs boolForKey:@"JpegTran.Enabled"])
+    {
+        types |= JPEG_ENABLED;
+    }
+    
+    if ([defs boolForKey:@"Gifsicle.Enabled"])
+    {
+        types |= GIF_ENABLED;
+    }
+    
+    if (!types) types = PNG_ENABLED; // will show error in the list
+    return types;
+}
+
+
+-(NSArray*)extensions {
+    
+    int types = [self typesEnabled];
+    NSMutableArray *extensions = [NSMutableArray array];
+    
+    if (types & PNG_ENABLED)        
+    {
+        [extensions addObject:@"png"]; [extensions addObject:@"PNG"];        
+    }
+    if (types & JPEG_ENABLED)  
+    {
+        [extensions addObjectsFromArray:[NSArray arrayWithObjects:@"jpg",@"JPG",@"jpeg",@"JPEG",nil]];
+    }    
+    if (types & GIF_ENABLED)  
+    {
+        [extensions addObject:@"gif"]; [extensions addObject:@"GIF"];
+    }
+    
+    return extensions;
+}
+
+
+-(NSArray *)fileTypes {
+    int types = [self typesEnabled];
+    
+    NSMutableArray *fileTypes = [NSMutableArray array];
+    
+    if (types & PNG_ENABLED)
+    {
+        [fileTypes addObjectsFromArray:[NSArray arrayWithObjects:@"png",@"PNG",NSFileTypeForHFSTypeCode( 'PNGf' ),@"public.png",@"image/png",nil]];
+    }
+    if (types & JPEG_ENABLED)
+    {
+        [fileTypes addObjectsFromArray:[NSArray arrayWithObjects:@"jpg",@"jpeg",@"JPG",@"JPEG",NSFileTypeForHFSTypeCode( 'JPEG' ),@"public.jpeg",@"image/jpeg",nil]];
+    }     
+    if (types & GIF_ENABLED)
+    {
+        [fileTypes addObjectsFromArray:[NSArray arrayWithObjects:@"gif",@"GIF",NSFileTypeForHFSTypeCode( 'GIFf' ),@"public.gif",@"image/gif",nil]];
+    }     
+	return fileTypes;
 }
 
 @end

@@ -16,19 +16,16 @@
 	
 	NSProgressIndicator *progressBar;
 	
-	NSArray *fileTypes;
 }
 
 - (IBAction)showPrefs:(id)sender;
 - (IBAction)startAgain:(id)sender;
 
-- (void)windowWillClose:(NSNotification *)aNotification;
 
 -(IBAction)openPngOutHomepage:(id)sender;
 -(IBAction)openPngOutDownload:(id)sender;
 
 -(IBAction)browseForFiles:(id)sender;
-
 
 + (void)initialize;
 
@@ -36,9 +33,6 @@
 
 @property (retain) IBOutlet NSTableView *tableView;
 @property (retain) IBOutlet NSArrayController *filesController;
-@property (retain,readonly) FilesQueue *filesQueue;
 @property (retain) IBOutlet NSApplication *application;
-@property (retain,readonly) PrefsController *prefsController;
 @property (retain) IBOutlet NSProgressIndicator *progressBar;
-@property (retain,readonly) NSArray *fileTypes;
 @end

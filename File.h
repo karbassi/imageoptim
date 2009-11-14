@@ -13,8 +13,9 @@
 	NSString *filePath;
 	NSString *displayName;
 	
-	long byteSize;
-	long byteSizeOptimized;	
+	NSUInteger byteSize;
+    NSUInteger byteSizeOptimized;	
+    NSString *bestToolName;
 	double percentDone;
 	
 	NSString *filePathOptimized;	
@@ -24,9 +25,9 @@
     
     NSMutableArray *workers;
     
-	int workersActive;
-	int workersFinished;
-	int workersTotal;
+	NSUInteger workersActive;
+	NSUInteger workersFinished;
+	NSUInteger workersTotal;
     
     NSOperationQueue *fileIOQueue;
     
@@ -37,19 +38,19 @@
 
 -(void)enqueueWorkersInCPUQueue:(NSOperationQueue *)queue fileIOQueue:(NSOperationQueue *)fileIOQueue;
 
--(void)setFilePathOptimized:(NSString *)f size:(long)s;
+-(void)setFilePathOptimized:(NSString *)f size:(NSUInteger)s toolName:(NSString*)s;
 
 -(id)initWithFilePath:(NSString *)name;
 -(id)copyWithZone:(NSZone *)zone;
--(void)setByteSize:(long)size;
--(void)setByteSizeOptimized:(long)size;
+-(void)setByteSize:(NSUInteger)size;
+-(void)setByteSizeOptimized:(NSUInteger)size;
 -(BOOL)isOptimized;
 
 -(void)setFilePath:(NSString *)s;
 
 -(NSString *)fileName;
 
-@property (assign) long byteSize, byteSizeOptimized;
+@property (assign) NSUInteger byteSize, byteSizeOptimized;
 @property (retain) NSString *statusText, *filePath, *displayName;
 @property (retain) NSImage *statusImage;
 

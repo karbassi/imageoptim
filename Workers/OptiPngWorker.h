@@ -8,8 +8,11 @@
 #import "CommandWorker.h"
 
 @interface OptiPngWorker : CommandWorker {
-	int idatSize;
-	int fileSize;	
-	int fileSizeOptimized;	
+    NSInteger optlevel, interlace;
+    
+    
+	NSInteger idatSize;
+	NSUInteger fileSize;	
+	NSUInteger fileSizeOptimized;	
 }
 @end

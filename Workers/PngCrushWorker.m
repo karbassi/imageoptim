@@ -9,14 +9,22 @@
 
 @implementation PngCrushWorker
 
+-(id)init {
+    if (self = [super init])
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        chunks = [defaults arrayForKey:@"PngCrush.Chunks"];
+        tryfix = [defaults boolForKey:@"PngCrush.Fix"];
+    }
+    return self;
+}
+
 -(void)run
 {
-	NSString *temp = [self tempPath:@"PngCrush"];
+	NSString *temp = [self tempPath];
 
-	NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-brute",@"-cc",@"--",[file filePath],temp,nil];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSMutableArray *args = [NSMutableArray arrayWithObjects:@"-reduce",@"-brute",@"-cc",@"--",[file filePath],temp,nil];
 	
-	NSArray *chunks = [defaults arrayForKey:@"PngCrush.Chunks"];
 	NSDictionary *dict;
 	for(dict in chunks)
 	{
@@ -28,15 +36,14 @@
 		}
 	}
 	
-	if ([defaults boolForKey:@"PngCrush.Fix"])
+	if (tryfix)
 	{
 		[args insertObject:@"-fix" atIndex:0];
 	}
 
 	NSTask *task = [self taskForKey:@"PngCrush" bundleName:@"pngcrush" arguments:args];
     if (!task) {
-        NSLog(@"Could not launch PngCrush");
-        [file setStatus:@"err" text:@"PngCrush failed to start"];
+        return;
     }
     
 	
@@ -58,10 +65,10 @@
 	
 	if (![task terminationStatus])
 	{
-		long fileSizeOptimized;
+		NSUInteger fileSizeOptimized;
 		if (fileSizeOptimized = [File fileByteSize:temp])
 		{
-			[file setFilePathOptimized:temp	size:fileSizeOptimized];			
+			[file setFilePathOptimized:temp	size:fileSizeOptimized toolName:[self className]];			
 		}
 	}
 	else NSLog(@"pngcrush failed");

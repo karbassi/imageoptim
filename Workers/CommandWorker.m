@@ -35,11 +35,11 @@
 {
 	NSData *temp;
 	char inputBuffer[4096];
-	int inputBufferPos=0;	
+	NSInteger inputBufferPos=0;	
 	while((temp = [commandHandle availableData]) && [temp length]) 
 	{			
 		const char *tempBytes = [temp bytes];
-		int bytesPos=0, bytesLength = [temp length];
+		NSInteger bytesPos=0, bytesLength = [temp length];
 		
 		while(bytesPos < bytesLength)
 		{
@@ -137,7 +137,12 @@
 -(NSTask *)taskForKey:(NSString *)key bundleName:(NSString *)resourceName arguments:(NSArray *)args
 {
 	NSString *executable = [self executablePathForKey:key bundleName:resourceName];
-	if (!executable) return nil;
+	if (!executable) 
+    {
+        NSLog(@"Could not launch %@",resourceName);
+        [file setStatus:@"err" text:[NSString stringWithFormat:NSLocalizedString(@"%@ failed to start",@"tooltip"),key]];
+        return nil;        
+    }
 	
 	return [self taskWithPath:executable arguments:args];	
 }
@@ -173,9 +178,10 @@
 	return nil;
 }
 
--(NSString *)tempPath:(NSString*)baseName
+-(NSString *)tempPath
 {
-	return [NSTemporaryDirectory() stringByAppendingPathComponent: [NSString stringWithFormat:@"ImageOptim.%@.%x.%x.tmp",baseName,[file hash],random()]];
+    static int uid=0; if (uid==0) uid = getpid()<<16;
+	return [NSTemporaryDirectory() stringByAppendingPathComponent: [NSString stringWithFormat:@"ImageOptim.%@.%x.%x.tmp",[self className],[file hash]^[self hash],uid++]];
 }
 
 -(NSObject<WorkerQueueDelegate>*)delegate

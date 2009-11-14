@@ -9,27 +9,33 @@
 
 @implementation AdvCompWorker
 
+-(id)init {
+    if (self = [super init])
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];	
+        level = [defaults integerForKey:@"AdvPng.Level"];
+
+    }
+    return self;
+}
+
 -(void)run
 {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSString *temp = [self tempPath:@"AdvPng"];
+	NSString *temp = [self tempPath];
+    NSError *error = nil;
 	
-	if (![fm copyPath:[file filePath] toPath:temp handler:nil])
+	if (![fm copyItemAtPath:[file filePath] toPath:temp error:&error])
 	{
-		NSLog(@"Can't make temp copy of %@ in %@",[file filePath],temp);
+		NSLog(@"Can't make temp copy of %@ in %@; %@",[file filePath],temp,error);
 	}
-	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];	
-	int level = [defaults integerForKey:@"AdvPng.Level"];
-	
+			
 	NSTask *task = [self taskForKey:@"AdvPng" bundleName:@"advpng" 
 						  arguments:[NSArray arrayWithObjects: [NSString stringWithFormat:@"-%d",level ? level : 4],@"-z",@"--",temp,nil]];
     if (!task) {
-        NSLog(@"Could not launch AdvPng");
-        [file setStatus:@"err" text:@"AdvPng failed to start"];
+        return;
     }
-    
-	
+    	
 	NSPipe *commandPipe = [NSPipe pipe];
 	NSFileHandle *commandHandle = [commandPipe fileHandleForReading];		
 	
@@ -47,7 +53,7 @@
     
 	if (![task terminationStatus] && fileSizeOptimized)
 	{
-		[file setFilePathOptimized:temp	size:fileSizeOptimized];
+		[file setFilePathOptimized:temp	size:fileSizeOptimized toolName:@"AdvPNG"];
 	}
 	//else NSLog(@"Advpng failed");
 }
