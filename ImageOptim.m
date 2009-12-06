@@ -8,6 +8,12 @@
 
 @implementation ImageOptim
 
+@synthesize statusBarLabel;
+@synthesize tableView;
+@synthesize filesController;
+@synthesize application;
+@synthesize progressBar;
+
 +(void)initialize
 {
 	//srandom(random() ^ time(NULL));
@@ -28,7 +34,8 @@
 //}
 
 -(void)awakeFromNib
-{		
+{		                       
+    [[statusBarLabel cell] setBackgroundStyle:NSBackgroundStyleRaised];
 	filesQueue = [[FilesQueue alloc] initWithTableView:tableView progressBar:progressBar andController:filesController];
 //    [self performSelectorInBackground:@selector(loadDupes) withObject:nil];
 }
@@ -116,8 +123,5 @@
     return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleGetInfoString"];
 }
 
-@synthesize tableView;
-@synthesize filesController;
-@synthesize application;
-@synthesize progressBar;
+
 @end
