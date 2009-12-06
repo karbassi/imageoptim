@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<tal:block metal:define-macro="layout">
+<meta charset="UTF-8"/>
+<tal:block metal:define-slot="head"/>
+<title metal:define-slot="title">ImageOptim – PNG/JPEG/GIF optimizer for Mac OS X</title>
+<meta name="viewport" content="width=640px"/>
+<style><tal:block tal:repeat="style styles" tal:content="structure php:readfile(style)"/></style>
+<link rel="stylesheet" href="style.css" tal:condition="php:false" />
+<div id="body">
+<h1><a href="/" tal:omit-tag="true:nolinkhome"><img src="imageoptim.png" alt="ImageOptim"/></a></h1>
+<ul id="nav">
+     <li tal:condition="not:true:nolinkhome"><a href="/">Home</a></li
+    ><li><a href="http://pornel.net/about">Contact</a></li
+    ><li><a href="http://pornel.net/imagealpha">ImageAlpha</a></li
+    ><li tal:condition="true:nolinkhome"><a href="http://pornel.net/imageoptim">Old site</a></li>
+</ul>
+    <div id="header">
+        <p><img src="screenshot.png" onload="this.removeAttribute('width');this.removeAttribute('height')" width="596" height="248" alt="Screenshot"/></p>
+    </div>
+    <div id="main">
+    <div id="sidebar">
+        <a class="button" href="http://pornel.net/ImageOptim.tbz2">Download</a>
+        <p class="download-info">
+            Version ${latest}<br />Mac OS X Leopard+
+        </p>
+        
+        <ul class="links">
+            <li><a href="http://pornel.net/ImageOptim1.0.10.tar.bz2" class="older"><span><strong>Tiger</strong> version</span></a></li>
+            <li><a href="/ImageOptim${beta}.tar.bz2" class="beta"><span><strong>Beta</strong> build ${beta}</span></a></li>
+            <li tal:condition="php:file != 'changelog'"><a href="changelog.html" class="changelog"><span>Changelog</span></a></li>
+            <li><a href="http://code.google.com/p/imageoptim/issues/list" class="bugs"><span>Bugs</span></a></li>
+            <li><a href="http://code.google.com/p/imageoptim/source/browse/" class="source"><span>Source code</span></a></li>
+        </ul>
+        <p class="langs">
+            <b>Available in:</b><br />
+            English, French,
+            Dutch and Polish.
+            <br />
+            <b>Coming soon:</b> German and Swedish.<br/>
+            <a 
+            class='translate
+             href="mailto:me"
+            ' 
+            href 
+            = '	
+            &#x20;&#x6d;&#97;i&#108;&#x74;o&#x3a;&#x20;&#37;&#55;0o&#x72;&#110;&#x65;%&#x36;&#x63;&#x25;&#x34;&#x30;&#x70;&#37;6&#102;%7&#x32;&#x6e;e%&#x36;c&#37;2en&#x65;t?
+            '><span>Help translate it!</span></a>
+        </p>    
+
+    </div>
+    
+    <div id="content" metal:define-slot="content">        
+
+       <p class="lede">ImageOptim optimizes images — so they take up less disk space and load faster — by finding best compression parameters and by removing unnecessary comments and color profiles. It handles <abbr>PNG</abbr>, <abbr>JPEG</abbr> and <abbr>GIF</abbr> animations.</p>
+   
+        
+        <p class="about-tools">ImageOptim combines various optimisation tools: <a class="reference" href="http://advancemame.sourceforge.net/doc-advpng.html">Adv<abbr>PNG</abbr></a> from <a class="reference" href="http://advancemame.sourceforge.net/comp-readme.html" >Advance<abbr>COMP</abbr></a>, <a class="reference" href="http://optipng.sourceforge.net/" >Opti<abbr>PNG</abbr></a>, <a class="reference" href="http://pmt.sourceforge.net/pngcrush/" >PngCrush</a>, <a class="reference" href="http://www.kokkonen.net/tjko/projects.html" >JpegOptim</a>, jpegtran from libjpeg, <a class="reference" href="http://www.lcdf.org/gifsicle/" >Gifsicle</a> and optionally <a class="reference" href="http://www.advsys.net/ken/util/pngout.htm" ><abbr>PNGOUT</abbr></a>.</p>
+       <p>It's excellent for publishing images on the web (easily shrinks images “Saved for Web” in Photoshop) and also useful for making Mac and iPhone applications smaller.</p>
+   
+       
+       <p class="about-pngout">To take advantage of <abbr>PNGOUT</abbr> you <a href="http://www.jonof.id.au/index.php?p=pngout" >have to download it</a> and set its path in ImageOptim's preferences, because <a class="reference" href="http://www.advsys.net/ken/utils.htm#pngoutkziplicense" >license of PNGOUT</a> forbids bundling of it with other applications.</p>
+       
+        <h2 id="sec20">Open Source</h2><p>ImageOptim is free, open-source software under terms of the <a class="reference" href="http://www.gnu.org/licenses/gpl-2.0.txt" >GPL v2</a>. <strong>Your contributions are welcome!</strong> Please grab <a href="http://code.google.com/p/imageoptim/source/checkout" >the source code</a> and <a href="http://code.google.com/p/imageoptim/issues/list">improve it</a>! Feel free to <a 
+        class='email
+         href="mailto:me"
+        ' 
+        href 
+        = '	
+        &#x20;&#x6d;&#97;i&#108;&#x74;o&#x3a;&#x20;&#37;&#55;0o&#x72;&#110;&#x65;%&#x36;&#x63;&#x25;&#x34;&#x30;&#x70;&#37;6&#102;%7&#x32;&#x6e;e%&#x36;c&#37;2en&#x65;t?
+        '>contact me</a> for assistance.</p>
+
+        <h2 id="sec40">How to use it</h2><p>Simply drag'n'drop images into the window! You can also drop files on ImageOptim's Dock icon or launch it from shell scripts with <code class="notranslate googleIsIncompetent" lang="zxx">open -a ImageOptim.app *.png</code>.</p>
+        <p>If you install <a href="/ImageOptim-workflow.zip">Snow Leopard service</a> you can run ImageOptim from Finder's context menu.</p>
+        
+</div>        
+</div>
+<p id="footer">Site designed by <a href="http://auforia.com/"><span>Auforia</span></a>.</p>
+</div>
+</tal:block>
+<tal:block metal:use-macro="layout" tal:define="nolinkhome php:1"/>
