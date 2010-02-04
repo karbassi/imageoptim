@@ -25,7 +25,7 @@ function data_encode($file)
 
 try
 {
-    foreach(glob("*.{png,jpg}",GLOB_BRACE | GLOB_NOSORT) as $file)
+    foreach(glob("*.{png,jpg,ico}",GLOB_BRACE | GLOB_NOSORT) as $file)
     {
         copy($file,"$dest/$file");
     }
@@ -52,14 +52,22 @@ try
 
     $tpl = new PHPTAL();
     $tpl->setOutputMode(PHPTAL::HTML5);
-    $tpl->latest = "1.2.2";
-    $tpl->beta = "1.2.3";
+    $tpl->latest = "1.2.3";
+    $tpl->beta = "1.2.4";
     $tpl->styles = $styles;
     $tpl->addPreFilter(new UnSpace);
     $tpl->addPreFilter(new PHPTAL_PreFilter_Normalize);
 
     foreach(glob("*.html") as $file)
     {
+        $tpl = new PHPTAL();
+        $tpl->setOutputMode(PHPTAL::HTML5);
+        $tpl->latest = "1.2.3";
+        $tpl->beta = "1.2.4";
+        $tpl->styles = $styles;
+        $tpl->addPreFilter(new UnSpace);
+        $tpl->addPreFilter(new PHPTAL_PreFilter_Normalize);
+        
         $tpl->setTemplate($file);
         $tpl->file = basename($file,".html");
         file_put_contents("$dest/$file",$tpl->execute());
