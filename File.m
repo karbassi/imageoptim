@@ -6,13 +6,13 @@
 
 #import "File.h"
 
-#import "AdvCompWorker.h"
-#import "PngoutWorker.h"
-#import "OptiPngWorker.h"
-#import "PngCrushWorker.h"
-#import "JpegoptimWorker.h"
-#import "JpegtranWorker.h"
-#import "GifsicleWorker.h"
+#import "Workers/AdvCompWorker.h"
+#import "Workers/PngoutWorker.h"
+#import "Workers/OptiPngWorker.h"
+#import "Workers/PngCrushWorker.h"
+#import "Workers/JpegoptimWorker.h"
+#import "Workers/JpegtranWorker.h"
+#import "Workers/GifsicleWorker.h"
 //#import "Dupe.h"
 
 @implementation File
@@ -114,6 +114,7 @@
 	{
         if ([filePathOptimized length])
         {
+            //NSLog(@"Removing %@",filePath);
             [[NSFileManager defaultManager] removeItemAtPath:filePathOptimized error:nil];
         }
         filePathOptimized = nil;
@@ -240,6 +241,7 @@
 
 -(void)workerHasFinished:(Worker *)worker
 {
+	NSLog(@"Worker finished notification 2");
 	@synchronized(self) 
     {
         workersActive--;

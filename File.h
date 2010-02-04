@@ -5,7 +5,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "Worker.h"
+#import "Workers/Worker.h"
 
 @class Dupe;
 
