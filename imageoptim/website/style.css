@@ -1,0 +1,234 @@
+
+.button {
+    display:block; width:auto;
+
+    text-align:center; margin:0.3em 0 1.1em; padding:4px 4px 5px;
+
+    background:#67dd09 no-repeat 50% 100%; border:1px solid #3a0;
+    color:#2E5411;
+    text-shadow:0 1px 0 #7f0;
+    text-shadow:0 1px 1px rgba(200,255,150,0.4), 0 1px 0 rgba(200,255,150,0.3), 0 -1px 1px rgba(0,0,0,0.15);
+
+    line-height:1.2; font-size:18px; letter-spacing:0.2px;
+    text-decoration:none;
+
+            border-radius:2em;
+       -moz-border-radius:2em;
+    -webkit-border-radius:15px;
+    /*-webkit-border-radius:2em; webkit on iphone can't handle it!*/
+    -webkit-box-shadow:0 3px 10px rgba(0,0,0,0.3); /* older webkit again */
+            box-shadow:0 3px 0.6em rgba(0,0,0,0.3), inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+    -webkit-box-shadow:0 3px 0.6em rgba(0,0,0,0.3), inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+       -moz-box-shadow:0 3px 0.6em rgba(0,0,0,0.3), inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+
+         outline-offset:-14px;
+    -moz-outline-offset:-14px;
+         -o-transition: background-color 0.1s linear;
+    -webkit-transition: background-color 0.1s linear;
+       -moz-transition: background-color 0.1s linear;
+}
+
+.oldschool .button {
+	background-image: url(buttongfx.png);
+}
+
+.button:focus {
+     background-color:#7e1;
+
+     -moz-outline: 2px solid rgba(0,0,255,0.2);
+     outline: auto 5px -webkit-focus-ring-color;
+             outline-radius:2em;
+     -webkit-outline-radius :20px;
+        -moz-outline-radius:2em;
+     outline-offset:-5px;
+     -webkit-box-shadow: inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+        -moz-box-shadow: inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+}
+
+.button:hover {
+    outline:none;
+    background-color:#67dd09;
+            box-shadow:0 3px 0.6em rgba(0,0,0,0.3), inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+    -webkit-box-shadow:0 3px 0.6em rgba(0,0,0,0.3), inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+       -moz-box-shadow:0 3px 0.6em rgba(0,0,0,0.3), inset 0 -5px 7px rgba(0,0,0,0.1), inset 0 -0.7em 0 rgba(0,0,0,0.07);
+}
+
+.button:active {
+    background-color:#57b90a; border-color:#180;
+    padding-bottom:4px; padding-top:5px;
+    -webkit-box-shadow:none;
+            box-shadow:inset 0 5px 7px rgba(0,0,0,0.6), inset 0 -5px 7px rgba(0,0,0,0.2), inset 0 -0.68em 0 rgba(0,0,0,0.07);
+    -webkit-box-shadow:inset 0 5px 7px rgba(0,0,0,0.6), inset 0 -5px 7px rgba(0,0,0,0.2), inset 0 -0.68em 0 rgba(0,0,0,0.07);
+       -moz-box-shadow:inset 0 5px 7px rgba(0,0,0,0.6), inset 0 -5px 7px rgba(0,0,0,0.2), inset 0 -0.68em 0 rgba(0,0,0,0.07);
+}
+
+
+html {color:black;background:#ccc; margin:0; padding:0; font: 0.875em/1.5 Helvetica, Arial,sans-serif; }
+#nav, .button, .download-info, #footer {font-family: "Whitney HTF", Helvetica, Arial, sans-serif}
+
+body {margin:0;padding:0 5px}
+
+#body {
+    width:90%;
+    min-width:32em;
+    max-width:938px;
+    max-width:53em;
+    margin:0 auto; padding:1em 0 0;
+}
+
+@media screen and (max-width:640px) {
+   #body {width:auto;}
+   #body #content {margin-right:10em}
+   #body #sidebar {width:8em;}
+}
+@media screen and (max-device-width:640px) {
+   #body {width:auto;}
+   #body #content {margin-right:10em}
+   #body #sidebar {width:8em;}
+}
+
+h1 {float:left; margin:0;  max-width:45%}
+h1, h1 > img {vertical-align:baseline; text-shadow: 0 1px 0 #e5e5e5; color:#444; line-height:1; font-size:39px;}
+h1 > img {vertical-align:-10%; max-width:100%}
+img {border:0}
+
+#nav {float:right; margin-right:-0.4em}
+
+#nav, #nav > li {margin:0; padding:0; display:inline}
+#nav a {
+    color:#333; background:#ccc; border:1px solid #ccc; text-shadow: 0 1px 0 #eee;
+    font-size:1.2em; line-height:48px; padding:0 0.5em 1px;
+    outline:none; text-decoration:none;
+            border-radius:1em;
+    -webkit-border-radius:1em;
+       -moz-border-radius:1em;
+         -o-transition: background-color 0.1s linear, border-color 0.2s linear;
+    -webkit-transition: background-color 0.1s linear, border-color 0.2s linear;
+       -moz-transition: background-color 0.1s linear, border-color 0.2s linear;
+}
+
+#nav a:hover, #nav a:focus {
+   color:#008; background:#c0c0c0; border-color: #666 #999 #bbb;
+}
+#nav a:active {
+   color:#33f; background-color:#bbb; border-color: #888 #ddd #eee;
+}
+
+#header {
+    clear:both;
+    overflow:hidden;
+    
+           border-top-left-radius:9px;    
+           border-top-right-radius:9px;
+   -webkit-border-top-left-radius:9px;
+   -webkit-border-top-right-radius:9px;
+   -moz-border-radius-topleft:9px;
+   -moz-border-radius-topright:9px;
+
+   background: #612033 url(reddishsrgb.jpg) 50% 45%;
+   background-image: url(reddishsrgb.jpg), -o-radial-gradient(88% 95%, cover, #FED1D4,#FBA8BC 10%,#931D3D 50%,#29040C 70%,#500, #000);
+   background-image: url(reddishsrgb.jpg), -moz-radial-gradient(88% 95%, cover, #FED1D4,#FBA8BC 10%,#931D3D 50%,#29040C 70%,#500, #000);
+   background-image: url(reddishsrgb.jpg), -webkit-gradient(radial, 90% bottom, 0, 70% 230%, 700, from(#FED1D4), to(#29040C), color-stop(0.1,#FBA8BC), color-stop(0.4,#931D3D));
+
+           box-shadow: inset 0px 5px 10px rgba(0,0,0,0.25);
+   -webkit-box-shadow: inset 0px 5px 10px rgba(0,0,0,0.25);
+      -moz-box-shadow: inset 0px 5px 10px rgba(0,0,0,0.25);
+}
+
+#header p {margin:6% auto 1%; text-align:center}
+#header img {margin:-25px -38px; max-width:109%; min-width:45%}
+
+#main {
+    overflow:hidden;
+    background:white; color:black; margin-bottom:1em;
+
+    border-bottom:1px solid #999;
+            border-bottom-left-radius:6px 9px;
+            border-bottom-right-radius:6px 9px;
+    -webkit-border-bottom-left-radius:6px 9px;
+    -webkit-border-bottom-right-radius:6px 9px;
+    -moz-border-radius-bottomleft:8px 9px;
+    -moz-border-radius-bottomright:8px 9px;
+}
+
+#content {padding:1em 0 1em 1em; margin-right:11.2em}
+#sidebar {float:right; width:9em; padding:1em}
+#sidebar > p:first-child {margin-top:0}
+
+
+.download-info {
+  border:1px solid #e3e3e3;
+          border-radius:4px;
+  -webkit-border-radius:4px;
+     -moz-border-radius:4px;
+  text-align:center;
+  margin:1.5em 0;
+  padding:0.5em;
+  font-size:0.8em;
+
+  color:#555;
+}
+
+.langs, .links {
+    margin:1.5em 0;
+    background:#eee;
+    padding:0.5em 0.5em 0.7em 0.5em;
+    font-size:0.89em;
+    color:#666;
+            border-radius: 3px;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+}
+.links li {margin:0;padding:0;list-style:none}
+
+.langs a, .links a {
+    color:#ccc; padding:1px 0; display:block;
+}
+.langs a span, .links a span {
+    color:#666;
+}
+.langs a:hover span, .links a:hover span {
+    color:#00f;
+}
+
+.langs h3, .langs h2 {margin:0; font-size:1em;}
+
+.links .changelog {padding-left:18px; background: url(older.png) no-repeat 0 50%}
+.tiger .older span {color:red}
+.langs .translate, .links .bugs, .links .source {padding-left:18px; background: /*inline*/ url(changelog.png) no-repeat 1px 50%}
+.links .beta, .links .older {padding-left:18px; background: /*inline*/ url(download.png) no-repeat 1px 45%}
+
+#content p:first-child {margin-top:0}
+.about-pngout {
+  	font-size:0.9em;
+		color:#331;
+    background:#ffe;padding:0.4em 0.8em; margin:1em 0;
+    border:1px solid #eea;
+
+    position:relative;
+
+            border-radius: 3px;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+}
+
+.about-pngout:before {
+    content:""; position:absolute; top:-1px; right:-1px; width:0; height:0;
+    border:6px solid; border-color:white white #eea #eea;
+}
+
+a.reference {color:#449; text-decoration:none}
+a.reference:visited {color:#748;}
+a.reference:hover {color:#44f; text-decoration:underline}
+a.reference:visited:hover {color:#a4a;}
+
+abbr {font-size:0.95em}
+h2 {font-size:1.1em; margin:1em 0 0}
+h2 + p {margin-top:0.5em}
+
+code {font-family:Courier,"Courier New",monospace; font-size:1em}
+
+#footer {font-size:0.9em;}
+#footer, #footer span {color:#666;}
+#footer a {color:#aaa;font-weight:bold;}
+#footer a:hover span {color:#009;}
