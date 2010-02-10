@@ -7,16 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5A73997F0EA27F8700D751E1 /* liblibpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A73997E0EA27F7E00D751E1 /* liblibpng.dylib */; };
 		5A8165FE0EA1163300962CF2 /* pngcrush.c in Sources */ = {isa = PBXBuildFile; fileRef = 5A8165E00EA1163300962CF2 /* pngcrush.c */; };
+		5A98488F11235498007622D7 /* liblibpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A98488C11235489007622D7 /* liblibpng.dylib */; };
+		5A9848901123549C007622D7 /* liblibpng.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A98488C11235489007622D7 /* liblibpng.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5A73997D0EA27F7E00D751E1 /* PBXContainerItemProxy */ = {
+		5A98486A11235373007622D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5A98486711235366007622D7 /* download */;
+			remoteInfo = download;
+		};
+		5A98488B11235489007622D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5A7399790EA27F7E00D751E1 /* libpng.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC0630554660B00DB518D;
+			remoteGlobalIDString = D2AAC0630554660B00DB518D /* liblibpng.dylib */;
+			remoteInfo = libpng;
+		};
+		5A984893112354B7007622D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5A7399790EA27F7E00D751E1 /* libpng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC0620554660B00DB518D /* libpng */;
 			remoteInfo = libpng;
 		};
 /* End PBXContainerItemProxy section */
@@ -24,12 +39,13 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		8DD76FAF0486AB0100D96B5E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				5A9848901123549C007622D7 /* liblibpng.dylib in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -63,7 +79,7 @@
 		5A7398ED0EA27D4A00D751E1 /* pnggccrd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pnggccrd.c; path = ../optipng/lib/libpng/pnggccrd.c; sourceTree = SOURCE_ROOT; };
 		5A7398EE0EA27D4A00D751E1 /* pngerror.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pngerror.c; path = ../optipng/lib/libpng/pngerror.c; sourceTree = SOURCE_ROOT; };
 		5A7398EF0EA27D4A00D751E1 /* png.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = png.c; path = ../optipng/lib/libpng/png.c; sourceTree = SOURCE_ROOT; };
-		5A7399790EA27F7E00D751E1 /* libpng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpng.xcodeproj; path = ../optipng/lib/libpng/libpng.xcodeproj; sourceTree = SOURCE_ROOT; };
+		5A7399790EA27F7E00D751E1 /* libpng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpng.xcodeproj; path = ../libpng/libpng.xcodeproj; sourceTree = SOURCE_ROOT; };
 		5A8165E00EA1163300962CF2 /* pngcrush.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngcrush.c; sourceTree = "<group>"; };
 		8DD76FB20486AB0100D96B5E /* pngcrush */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pngcrush; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -73,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A73997F0EA27F8700D751E1 /* liblibpng.dylib in Frameworks */,
+				5A98488F11235498007622D7 /* liblibpng.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,10 +168,10 @@
 			name = zlib;
 			sourceTree = "<group>";
 		};
-		5A73997A0EA27F7E00D751E1 /* Products */ = {
+		5A98488811235489007622D7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5A73997E0EA27F7E00D751E1 /* liblibpng.dylib */,
+				5A98488C11235489007622D7 /* liblibpng.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,6 +185,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXLegacyTarget section */
+		5A98486711235366007622D7 /* download */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 5A98486E11235394007622D7 /* Build configuration list for PBXLegacyTarget "download" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "";
+			dependencies = (
+			);
+			name = download;
+			passBuildSettingsInEnvironment = 1;
+			productName = download;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		8DD76FA90486AB0100D96B5E /* pngcrush */ = {
 			isa = PBXNativeTarget;
@@ -181,6 +214,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				5A98486B11235373007622D7 /* PBXTargetDependency */,
+				5A984894112354B7007622D7 /* PBXTargetDependency */,
 			);
 			name = pngcrush;
 			productInstallPath = "$(HOME)/bin";
@@ -200,23 +235,24 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5A73997A0EA27F7E00D751E1 /* Products */;
+					ProductGroup = 5A98488811235489007622D7 /* Products */;
 					ProjectRef = 5A7399790EA27F7E00D751E1 /* libpng.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
 				8DD76FA90486AB0100D96B5E /* pngcrush */,
+				5A98486711235366007622D7 /* download */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		5A73997E0EA27F7E00D751E1 /* liblibpng.dylib */ = {
+		5A98488C11235489007622D7 /* liblibpng.dylib */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
 			path = liblibpng.dylib;
-			remoteRef = 5A73997D0EA27F7E00D751E1 /* PBXContainerItemProxy */;
+			remoteRef = 5A98488B11235489007622D7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -231,6 +267,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5A98486B11235373007622D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5A98486711235366007622D7 /* download */;
+			targetProxy = 5A98486A11235373007622D7 /* PBXContainerItemProxy */;
+		};
+		5A984894112354B7007622D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libpng;
+			targetProxy = 5A984893112354B7007622D7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB928608733DD80010E9CD /* Debug */ = {
@@ -273,13 +322,17 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_OBJC_CALL_CXX_CDTORS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THREADSAFE_STATICS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.4;
 				VALID_ARCHS = "i386 ppc x86_64";
 			};
 			name = Debug;
@@ -288,13 +341,42 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				DEAD_CODE_STRIPPING = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PREBINDING = NO;
-				SDKROOT = macosx10.4;
 				VALID_ARCHS = "i386 ppc x86_64";
+			};
+			name = Release;
+		};
+		5A98486811235366007622D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = download;
+			};
+			name = Debug;
+		};
+		5A98486911235366007622D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = download;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -315,6 +397,15 @@
 			buildConfigurations = (
 				1DEB928A08733DD80010E9CD /* Debug */,
 				1DEB928B08733DD80010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5A98486E11235394007622D7 /* Build configuration list for PBXLegacyTarget "download" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A98486811235366007622D7 /* Debug */,
+				5A98486911235366007622D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
