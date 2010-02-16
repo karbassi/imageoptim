@@ -52,8 +52,8 @@ try
 
     $tpl = new PHPTAL();
     $tpl->setOutputMode(PHPTAL::HTML5);
-    $tpl->latest = "1.2.3";
-    $tpl->beta = "1.2.4";
+    $tpl->latest = "1.2.4";
+    $tpl->beta = NULL;//"1.2.4";
     $tpl->styles = $styles;
     $tpl->addPreFilter(new UnSpace);
     $tpl->addPreFilter(new PHPTAL_PreFilter_Normalize);
@@ -62,8 +62,8 @@ try
     {
         $tpl = new PHPTAL();
         $tpl->setOutputMode(PHPTAL::HTML5);
-        $tpl->latest = "1.2.3";
-        $tpl->beta = "1.2.4";
+        $tpl->latest = "1.2.4";
+        $tpl->beta = NULL;//"1.2.4";
         $tpl->styles = $styles;
         $tpl->addPreFilter(new UnSpace);
         $tpl->addPreFilter(new PHPTAL_PreFilter_Normalize);
