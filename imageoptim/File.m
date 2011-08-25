@@ -22,16 +22,16 @@
 -(id)initWithFilePath:(NSString *)name;
 {
 	if (self = [self init])
-	{	
+	{
 		[self setFilePath:name];
 		[self setStatus:@"wait" order:0 text:NSLocalizedString(@"New file",@"newly added to the queue")];
-		
+
 		workersTotal = 0;
 		workersActive = 0;
 		workersFinished = 0;
 //		NSLog(@"Created new");
 	}
-	return self;	
+	return self;
 }
 
 -(NSString *)fileName
@@ -46,8 +46,8 @@
 	if (filePath != s)
 	{
 		filePath = [s copy];
-		
-        self.displayName = [[NSFileManager defaultManager] displayNameAtPath:filePath];		
+
+        self.displayName = [[NSFileManager defaultManager] displayNameAtPath:filePath];
 	}
 }
 
@@ -63,13 +63,13 @@
 
 -(void)setByteSize:(NSUInteger)size
 {
-    @synchronized(self) 
-    {        
+    @synchronized(self)
+    {
         if (!byteSize && size > 10)
         {
     //		NSLog(@"setting file size of %@ to %d",self,size);
             byteSize = size;
-            if (!byteSizeOptimized || byteSizeOptimized > byteSize) [self setByteSizeOptimized:size];		
+            if (!byteSizeOptimized || byteSizeOptimized > byteSize) [self setByteSizeOptimized:size];
         }
         else if (byteSize != size)
         {
@@ -97,8 +97,8 @@
 
 -(void)setByteSizeOptimized:(NSUInteger)size
 {
-    @synchronized(self) 
-    {        
+    @synchronized(self)
+    {
         if ((!byteSizeOptimized || size < byteSizeOptimized) && size > 30)
         {
     //		NSLog(@"We've got a new winner. old %d new %d",byteSizeOptimized,size);
@@ -123,9 +123,9 @@
 
 -(void)setFilePathOptimized:(NSString *)path size:(NSUInteger)size toolName:(NSString*)toolname
 {
-    @synchronized(self) 
-    {        
-        NSLog(@"File %@ optimized with %@ from %d to %d in %@",filePath?filePath:filePathOptimized,toolname,byteSizeOptimized,size,path);        
+    @synchronized(self)
+    {
+        NSLog(@"File %@ optimized with %@ from %d to %d in %@",filePath?filePath:filePathOptimized,toolname,byteSizeOptimized,size,path);
         if (size <= byteSizeOptimized)
         {
             bestToolName = [toolname stringByReplacingOccurrencesOfString:@"Worker" withString:@""];
@@ -138,26 +138,26 @@
 
 -(BOOL)saveResult
 {
-	if (!filePathOptimized) 
+	if (!filePathOptimized)
 	{
 		NSLog(@"WTF? save without filePathOptimized? for %@", filePath);
 		return NO;
 	}
-	
+
 	@try
 	{
 		NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
 		BOOL preserve = [defs boolForKey:@"PreservePermissions"];
 		BOOL backup = [defs boolForKey:@"BackupFiles"];
 		NSFileManager *fm = [NSFileManager defaultManager];
-		
+
 		if (backup)
 		{
             NSError *error = nil;
 			NSString *backupPath = [filePath stringByAppendingString:@"~"];
-			
+
 			[fm removeItemAtPath:backupPath error:nil];// ignore error
-			
+
 			BOOL res;
 			if (preserve)
 			{
@@ -167,19 +167,19 @@
 			{
 				res = [fm moveItemAtPath:filePath toPath:backupPath error:&error];
 			}
-			
+
 			if (!res)
 			{
 				NSLog(@"failed to save backup as %@ (preserve = %d) %@",backupPath,preserve,error);
 				return NO;
 			}
 		}
-		
+
 		if (preserve)
-		{		
+		{
 			NSFileHandle *writehandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
 			NSData *data = [NSData dataWithContentsOfFile:filePathOptimized];
-			
+
 			if (writehandle && data && [data length] == byteSizeOptimized && [data length] > 30)
 			{
 				[writehandle writeData:data];
@@ -187,25 +187,25 @@
                 [writehandle closeFile];
                 [self removeOldFilePathOptimized];
 			}
-			else 
+			else
 			{
 				NSLog(@"Temp file size %d does not match expected %d in %@ for %@",[data length],byteSizeOptimized,filePathOptimized,filePath);
-				return NO;				
+				return NO;
 			}
 		}
 		else
 		{
             NSError *error = nil;
 			if (!backup) {[fm removeItemAtPath:filePath error:nil];} //ignore error
-			
-			if ([fm moveItemAtPath:filePathOptimized toPath:filePath error:&error]) 
+
+			if ([fm moveItemAtPath:filePathOptimized toPath:filePath error:&error])
 			{
                 filePathOptimized = nil;
-            }            
+            }
             else
             {
                 NSLog(@"Failed to move from %@ to %@; %@",filePathOptimized, filePath, error);
-				return NO;				
+				return NO;
 			}
 		}
 	}
@@ -214,7 +214,7 @@
 		NSLog(@"Exception thrown %@",e);
 		return NO;
 	}
-	
+
 	return YES;
 }
 
@@ -223,7 +223,7 @@
 	@synchronized(self)
     {
         workersActive++;
-        [self setStatus:@"progress" order:4 text:[NSString stringWithFormat:NSLocalizedString(@"Started %@",@"command name"),[worker className]]];        
+        [self setStatus:@"progress" order:4 text:[NSString stringWithFormat:NSLocalizedString(@"Started %@",@"command name"),[worker className]]];
     }
 }
 
@@ -232,21 +232,21 @@
     {
         [self setStatus:@"ok" order:7 text:[NSString stringWithFormat:NSLocalizedString(@"Optimized successfully with %@",@"tooltip"),bestToolName]];
     }
-    else 
+    else
     {
         NSLog(@"saveResult failed");
-        [self setStatus:@"err" order:9 text:NSLocalizedString(@"Optimized file could not be saved",@"tooltip")];				
+        [self setStatus:@"err" order:9 text:NSLocalizedString(@"Optimized file could not be saved",@"tooltip")];
     }
 }
 
 -(void)workerHasFinished:(Worker *)worker
 {
 	//NSLog(@"Worker finished notification 2");
-	@synchronized(self) 
+	@synchronized(self)
     {
         workersActive--;
         workersFinished++;
-        
+
         if (!workersActive)
         {
             if (!byteSize || !byteSizeOptimized)
@@ -260,11 +260,11 @@
                 {
                     NSOperation *saveOp = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(saveResultAndUpdateStatus) object:nil];
                     [workers addObject:saveOp];
-                    [fileIOQueue addOperation:saveOp];                    
+                    [fileIOQueue addOperation:saveOp];
                 }
                 else
                 {
-                    [self setStatus:@"noopt" order:5 text:NSLocalizedString(@"File cannot be optimized any further",@"tooltip")];	
+                    [self setStatus:@"noopt" order:5 text:NSLocalizedString(@"File cannot be optimized any further",@"tooltip")];
 //                    if (dupe) [Dupe addDupe:dupe];
                 }
             }
@@ -273,20 +273,20 @@
                 [self setStatus:@"wait" order:2 text:NSLocalizedString(@"Waiting to start more optimisations",@"tooltip")];
             }
         }
-    }	    
+    }
 }
 
 //-(void)checkDupe:(NSData *)data {
 //    Dupe *d = [[Dupe alloc] initWithData:data];
 //    @synchronized(self) {
-//        dupe = d;        
+//        dupe = d;
 //    }
 //    if ([Dupe isDupe:dupe])
 //    {
 //        [self cleanup];
 //        [self setStatus:@"noopt" text:@"File was already optimized by ImageOptim"];
 //    }
-//    
+//
 //}
 
 #define FILETYPE_PNG 1
@@ -301,7 +301,7 @@
     char filedata[6];
 
     [data getBytes:filedata length:sizeof(filedata)];
-    
+
 	if (0==memcmp(filedata, pngheader, sizeof(pngheader)))
 	{
 		return FILETYPE_PNG;
@@ -320,51 +320,51 @@
 -(void)enqueueWorkersInCPUQueue:(NSOperationQueue *)queue fileIOQueue:(NSOperationQueue *)aFileIOQueue
 {
     fileIOQueue = aFileIOQueue; // will be used for saving
-    
+
     //NSLog(@"%@ add",filePath);
     [self setStatus:@"wait" order:0 text:NSLocalizedString(@"Waiting in queue",@"tooltip")];
-    
+
     @synchronized(self)
     {
         workersActive++; // isBusy must say yes!
     }
-    
+
     workers = [[NSMutableArray alloc] initWithCapacity:10];
-    
+
     NSOperation *actualEnqueue = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(doEnqueueWorkersInCPUQueue:) object:queue];
     [workers addObject:actualEnqueue];
-    [fileIOQueue addOperation:actualEnqueue];        
+    [fileIOQueue addOperation:actualEnqueue];
 }
 
--(void)doEnqueueWorkersInCPUQueue:(NSOperationQueue *)queue {  
+-(void)doEnqueueWorkersInCPUQueue:(NSOperationQueue *)queue {
 
     //NSLog(@"%@ inspect",filePath);
-    [self setStatus:@"progress" order:3 text:NSLocalizedString(@"Inspecting file",@"tooltip")];        
+    [self setStatus:@"progress" order:3 text:NSLocalizedString(@"Inspecting file",@"tooltip")];
 
     @synchronized(self)
     {
-        workersActive--;        
+        workersActive--;
         byteSize=0; // reset to allow restart
         byteSizeOptimized=0;
     }
-    	
-	
+
+
 	NSMutableArray *runFirst = [NSMutableArray new];
 	NSMutableArray *runLater = [NSMutableArray new];
-		
+
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-	
+
     NSData *fileData = [NSData dataWithContentsOfMappedFile:filePath];
     NSUInteger length = [fileData length];
     if (!fileData || !length)
     {
-        [self setStatus:@"err" order:8 text:NSLocalizedString(@"Can't map file into memory",@"tooltip")]; 
+        [self setStatus:@"err" order:8 text:NSLocalizedString(@"Can't map file into memory",@"tooltip")];
         return;
     }
     [self setByteSize:length];
 
     int fileType = [self fileType:fileData];
-    
+
 	if (fileType == FILETYPE_PNG)
 	{
         Worker *w = nil;
@@ -417,7 +417,7 @@
             GifsicleWorker *w = [[GifsicleWorker alloc] initWithFile:self];
             w.interlace = NO;
             [runLater addObject:w];
-            
+
             w = [[GifsicleWorker alloc] initWithFile:self];
             w.interlace = YES;
             [runLater addObject:w];
@@ -429,25 +429,25 @@
         [self cleanup];
         return;
     }
-    
+
 //    NSOperation *checkDupe = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(checkDupe:) object:fileData];
 //    // largeish files are best to skip
 //    if (length > 10000) [checkDupe setQueuePriority:NSOperationQueuePriorityHigh];
 //    else if (length < 3000) [checkDupe setQueuePriority:NSOperationQueuePriorityLow];
 //    [workers addObject:checkDupe];
 //    [fileIOQueue addOperation:checkDupe];
-    
+
 	Worker *lastWorker = nil;
-	
+
 //	NSLog(@"file %@ has workers first %@ and later %@",self,runFirst,runLater);
-		
+
 	workersTotal += [runFirst count] + [runLater count];
 
 	for(Worker *w in runFirst)
 	{
-        if (lastWorker) 
+        if (lastWorker)
         {
-            [w addDependency:lastWorker];            
+            [w addDependency:lastWorker];
         }
         else {
             [w setQueuePriority:NSOperationQueuePriorityLow]; // finish first!
@@ -455,18 +455,18 @@
 		[queue addOperation:w];
 		lastWorker = w;
 	}
-	
+
     lastWorker = [runFirst lastObject];
 	for(Worker *w in runLater)
 	{
         if (lastWorker) [w addDependency:lastWorker];
 		[queue addOperation:w];
-	}	
-	
+	}
+
     [workers addObjectsFromArray:runFirst];
     [workers addObjectsFromArray:runLater];
-    
-	if (!workersTotal) 
+
+	if (!workersTotal)
 	{
 		//NSLog(@"all relevant tools are unavailable/disabled - nothing to do!");
 		[self setStatus:@"err" order:8 text:NSLocalizedString(@"All neccessary tools have been disabled in Preferences",@"tooltip")];
@@ -483,7 +483,7 @@
     {
         for(NSOperation *w in workers)
         {
-            [w cancel]; 
+            [w cancel];
         }
         [workers removeAllObjects];
         [self removeOldFilePathOptimized];
@@ -495,14 +495,14 @@
     BOOL isit;
     @synchronized(self)
     {
-        isit = workersActive || workersTotal != workersFinished;        
+        isit = workersActive || workersTotal != workersFinished;
     }
     return isit;
 }
 
 -(void)setStatus:(NSString *)imageName order:(NSInteger)order text:(NSString *)text
 {
-    @synchronized(self) 
+    @synchronized(self)
     {
         if (statusText == text) return;
         statusOrder = order;
