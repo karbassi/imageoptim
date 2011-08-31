@@ -33,6 +33,7 @@
 	return self;
 }
 
+
 -(NSString *)fileName
 {
 	if (displayName) return displayName;
@@ -68,8 +69,8 @@
             byteSize = size;
             if (!byteSizeOptimized || byteSizeOptimized > byteSize) [self setByteSizeOptimized:size];
         }
+        }
     }
-}
 
 -(double)percentOptimized
 {
@@ -124,8 +125,8 @@
             [self removeOldFilePathOptimized];
             filePathOptimized = [path copy];
             [self setByteSizeOptimized:size];
-        }
     }
+}
 }
 
 -(BOOL)saveResult
@@ -214,7 +215,7 @@
 {
 	@synchronized(self)
     {
-        workersActive++;
+		workersActive++;
         [self setStatus:@"progress" order:4 text:[NSString stringWithFormat:NSLocalizedString(@"Started %@",@"command name"),[worker className]]];
     }
 }
@@ -357,25 +358,25 @@
 	if (fileType == FILETYPE_PNG)
 	{
         Worker *w = nil;
-		if ([defs boolForKey:@"PngCrush.Enabled"])
+		if ([defs boolForKey:@"PngCrushEnabled"])
 		{
 			w = [[PngCrushWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
 		}
-		if ([defs boolForKey:@"PngOut.Enabled"])
+		if ([defs boolForKey:@"PngOutEnabled"])
 		{
 			w = [[PngoutWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
 		}
-		if ([defs boolForKey:@"OptiPng.Enabled"])
+		if ([defs boolForKey:@"OptiPngEnabled"])
 		{
 			w = [[OptiPngWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
 		}
-		if ([defs boolForKey:@"AdvPng.Enabled"])
+		if ([defs boolForKey:@"AdvPngEnabled"])
 		{
 			w = [[AdvCompWorker alloc] initWithFile:self];
 			if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
@@ -384,13 +385,13 @@
 	}
 	else if (fileType == FILETYPE_JPEG)
     {
-        if ([defs boolForKey:@"JpegOptim.Enabled"])
+        if ([defs boolForKey:@"JpegOptimEnabled"])
         {
             Worker *w = [[JpegoptimWorker alloc] initWithFile:self];
             if ([w makesNonOptimizingModifications]) [runFirst addObject:w];
 			else [runLater addObject:w];
         }
-        if ([defs boolForKey:@"JpegTran.Enabled"])
+        if ([defs boolForKey:@"JpegTranEnabled"])
         {
             Worker *w = [[JpegtranWorker alloc] initWithFile:self];
             [runLater addObject:w];
@@ -398,7 +399,7 @@
     }
 	else if (fileType == FILETYPE_GIF)
     {
-        if ([defs boolForKey:@"Gifsicle.Enabled"])
+        if ([defs boolForKey:@"GifsicleEnabled"])
         {
             GifsicleWorker *w = [[GifsicleWorker alloc] initWithFile:self];
             w.interlace = NO;
