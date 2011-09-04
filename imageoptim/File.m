@@ -120,7 +120,7 @@
             bestToolName = [toolname stringByReplacingOccurrencesOfString:@"Worker" withString:@""];
             assert(![filePathOptimized isEqualToString:path]);
             [self removeOldFilePathOptimized];
-            filePathOptimized = [path copy];
+            filePathOptimized = path;
             [self setByteSizeOptimized:size];
         }
     }

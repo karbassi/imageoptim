@@ -18,9 +18,7 @@
 {
 	//Get information from ArrayController
     if (indexSet != selectedIndexes) {
-		indexSet = [indexSet copy];
-		[selectedIndexes release];
-		selectedIndexes = indexSet;
+		selectedIndexes = [indexSet copy];
 		[previewPanel reloadData];
 	}
 }
@@ -188,7 +186,7 @@
 {
     // This document is now responsible of the preview panel
     // It is allowed to set the delegate, data source and refresh panel.
-    previewPanel = [panel retain];
+    previewPanel = panel;
     panel.delegate = self;
     panel.dataSource = self;
 }
@@ -198,7 +196,6 @@
     // This document loses its responsisibility on the preview panel
     // Until the next call to -beginPreviewPanelControl: it must not
     // change the panel's delegate, data source or refresh it.
-    [previewPanel release];
     previewPanel = nil;
 }
 
