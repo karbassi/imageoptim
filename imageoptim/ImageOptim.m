@@ -112,7 +112,14 @@
 
 - (IBAction)startAgain:(id)sender
 {
-	[filesQueue startAgain];
+    // alt-click on a button (this is used from menu too, but alternative menu item covers that anyway
+    BOOL onlyOptimised = !!([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask);
+	[filesQueue startAgainOptimized:onlyOptimised];
+}
+
+- (IBAction)startAgainOptimized:(id)sender
+{
+    [filesQueue startAgainOptimized:YES];
 }
 
 
@@ -233,7 +240,9 @@
 {
     SEL action = [menuItem action];
 	if (action == @selector(startAgain:)) {
-		return [tableView numberOfRows]>0;
+		return [filesQueue canStartAgainOptimized:NO];
+    } else if (action == @selector(startAgainOptimized:)) {
+		return [filesQueue canStartAgainOptimized:YES];
     } else if (action == @selector(clearComplete:)) {
         return [filesQueue canClearComplete];
     }
