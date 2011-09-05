@@ -418,7 +418,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="326808065">
 								<int key="NSCellFlags">67239488</int>
 								<int key="NSCellFlags2">4327424</int>
-								<string key="NSContents">Przeciągnij pliki obrazków do tabeli powyżej</string>
+								<string key="NSContents">Przeciągnij pliki obrazków do obszaru powyżej</string>
 								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="646228687"/>
 								<bool key="NSDrawsBackground">YES</bool>
