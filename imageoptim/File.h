@@ -31,11 +31,12 @@
 	NSUInteger workersTotal;
 
     NSOperationQueue *fileIOQueue;
-
-    Dupe *dupe;
+    
+    BOOL done;
 }
 
 -(BOOL)isBusy;
+-(BOOL)isDone;
 
 -(void)enqueueWorkersInCPUQueue:(NSOperationQueue *)queue fileIOQueue:(NSOperationQueue *)fileIOQueue;
 

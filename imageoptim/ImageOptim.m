@@ -115,6 +115,12 @@
 	[filesQueue startAgain];
 }
 
+
+- (IBAction)clearComplete:(id)sender
+{
+	[filesQueue clearComplete];
+}
+
 - (IBAction)showPrefs:(id)sender
 {
 //	NSLog(@"show prefs");
@@ -225,9 +231,13 @@
 
 - (BOOL)validateMenuItem:(NSMenuItem*)menuItem
 {
-	if ([menuItem action] == @selector(startAgain:)) {
+    SEL action = [menuItem action];
+	if (action == @selector(startAgain:)) {
 		return [tableView numberOfRows]>0;
+    } else if (action == @selector(clearComplete:)) {
+        return [filesQueue canClearComplete];
     }
+
 	return [menuItem isEnabled];
 }
 
