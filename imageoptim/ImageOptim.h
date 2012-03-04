@@ -27,14 +27,14 @@
 - (IBAction)clearComplete:(id)sender;
 
 -(IBAction)quickLookAction:(id)sender;
--(IBAction)openPngOutHomepage:(id)sender;
--(IBAction)openPngOutDownload:(id)sender;
-
+-(IBAction)openHomepage:(id)sender;
+-(IBAction)viewSource:(id)sender;
 -(IBAction)browseForFiles:(id)sender;
 
 + (void)initialize;
 
 +(int)numberOfCPUs;
+-(void)openURL:(NSString *)stringURL;
 
 @property (copy) NSIndexSet* selectedIndexes;
 
