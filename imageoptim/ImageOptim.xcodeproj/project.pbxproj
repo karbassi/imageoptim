@@ -196,13 +196,6 @@
 			remoteGlobalIDString = 8DD76FA90486AB0100D96B5E;
 			remoteInfo = jpegoptim;
 		};
-		5A95D412139D72A8005FD6FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A20CC8E1123939C0000400D /* libpng.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5AC2B4D613394EDA00376783;
-			remoteInfo = static;
-		};
 		5A984D4911238E51007622D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5A984D4011238E51007622D7 /* advpng.xcodeproj */;
@@ -315,7 +308,6 @@
 		5A714AAC0CB0196A00C242C0 /* MyTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTableView.m; sourceTree = "<group>"; };
 		5A739C260EA4073700D751E1 /* jpegtran.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = jpegtran.xcodeproj; path = ../jpegtran/jpegtran.xcodeproj; sourceTree = SOURCE_ROOT; };
 		5A7A314713E436690012DCFB /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		5A7A314A13E437430012DCFB /* be */ = {isa = PBXFileReference; lastKnownFileType = folder; name = be; path = be.lproj/Help; sourceTree = "<group>"; };
 		5A7D24F013EDF5F100815AAA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = es; path = es.lproj/Credits.rtf; sourceTree = "<group>"; };
 		5A7D24F113EDF5F100815AAA /* es */ = {isa = PBXFileReference; lastKnownFileType = folder; name = es; path = es.lproj/Help; sourceTree = "<group>"; };
 		5A7D24F213EDF5F100815AAA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -713,6 +705,7 @@
 				ru,
 				es,
 				da,
+				fr,
 				no,
 				"pt-BR",
 			);

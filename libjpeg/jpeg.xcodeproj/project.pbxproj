@@ -53,9 +53,7 @@
 		5A739B6F0EA4012300D751E1 /* jmemmgr.c in Sources */ = {isa = PBXBuildFile; fileRef = 5A739B3F0EA4012300D751E1 /* jmemmgr.c */; };
 		5A739B700EA4012300D751E1 /* jpeglib.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739B400EA4012300D751E1 /* jpeglib.h */; };
 		5A739BE20EA4050000D751E1 /* jmorecfg.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739BD40EA4050000D751E1 /* jmorecfg.h */; };
-		5A739BE30EA4050000D751E1 /* jpeglib.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739BD50EA4050000D751E1 /* jpeglib.h */; };
 		5A739BE50EA4050000D751E1 /* jconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739BD70EA4050000D751E1 /* jconfig.h */; };
-		5A739BE60EA4050000D751E1 /* jmemsys.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739BD80EA4050000D751E1 /* jmemsys.h */; };
 		5A739BE70EA4050000D751E1 /* jerror.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739BD90EA4050000D751E1 /* jerror.h */; };
 		5A739BE80EA4050000D751E1 /* jinclude.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739BDA0EA4050000D751E1 /* jinclude.h */; };
 		5A739BE90EA4050000D751E1 /* jversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A739BDB0EA4050000D751E1 /* jversion.h */; };
@@ -260,9 +258,7 @@
 				5A739B610EA4012300D751E1 /* jmemsys.h in Headers */,
 				5A739B700EA4012300D751E1 /* jpeglib.h in Headers */,
 				5A739BE20EA4050000D751E1 /* jmorecfg.h in Headers */,
-				5A739BE30EA4050000D751E1 /* jpeglib.h in Headers */,
 				5A739BE50EA4050000D751E1 /* jconfig.h in Headers */,
-				5A739BE60EA4050000D751E1 /* jmemsys.h in Headers */,
 				5A739BE70EA4050000D751E1 /* jerror.h in Headers */,
 				5A739BE80EA4050000D751E1 /* jinclude.h in Headers */,
 				5A739BE90EA4050000D751E1 /* jversion.h in Headers */,
