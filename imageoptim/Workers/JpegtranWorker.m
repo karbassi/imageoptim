@@ -14,6 +14,7 @@
     {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         strip = [defaults boolForKey:@"JpegTranStripAll"];
+        jpegrescan = [defaults boolForKey:@"JpegRescanEnabled"];
     }
     return self;
 }
@@ -24,12 +25,22 @@
 
     // eh, handling of paths starting with "-" is unsafe here. Hopefully all paths from dropped files will be absolute...
 	NSMutableArray *args = [NSMutableArray arrayWithObjects:[file filePath],temp,nil];
+	NSString *executableName;
 
-	if (strip) {
-		[args insertObject:@"-s" atIndex:0];
+	if (jpegrescan) {
+        executableName = @"jpegrescan";
+        if (strip) {
+            [args insertObject:@"-s" atIndex:0];
+        }
+	} else {
+        executableName = @"jpegtran";
+        [args insertObject:@"-optimize" atIndex:0];
+        [args insertObject:@"-copy" atIndex:0];
+        [args insertObject:strip ? @"none" : @"all" atIndex:1];
 	}
 
-    if (![self taskForKey:@"JpegTran" bundleName:@"jpegrescan" arguments:args]) {
+    // For jpegrescan to work both JpegTran and JpegRescan need to be enabled
+    if (![self taskForKey:@"JpegTran" bundleName:executableName arguments:args]) {
         return;
     }
 
@@ -55,7 +66,7 @@
         NSUInteger fileSizeOptimized;
 		if ((fileSizeOptimized = [File fileByteSize:temp]))
 		{
-			[file setFilePathOptimized:temp	size:fileSizeOptimized toolName:[self className]];
+			[file setFilePathOptimized:temp	size:fileSizeOptimized toolName:executableName];
 		}
 	}
 }
