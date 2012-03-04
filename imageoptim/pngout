@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "Please get pngout from http://www.jonof.id.au/pngout"
+exit 1
