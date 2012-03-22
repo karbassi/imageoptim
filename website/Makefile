@@ -4,4 +4,4 @@ all:
 	@php make.php
 
 sync: all
-	rsync -Prz public_html/ kis:/www/imageoptim.pornel.net/
+	rsync -Prz public_html/ kis:/www/imageoptim.com/
